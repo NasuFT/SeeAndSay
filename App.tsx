@@ -1,9 +1,11 @@
+import 'expo-dev-client';
+
 import { Provider } from 'react-redux';
 import { store } from '@/store';
-import { NavigationContainer } from '@react-navigation/native';
-import { NavigationLightTheme, PaperLightTheme } from '@/theme';
+import { PaperLightTheme, NavigationLightTheme } from '@/theme';
 import { Provider as PaperProvider } from 'react-native-paper';
-import RootNavigator from '@/navigators/RootNavigator';
+import { View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
 if (__DEV__) {
   require('./reactotron.config.js').then(() => console.log('Reactotron configured'));
@@ -13,7 +15,7 @@ const AppContainer = () => {
   return (
     <NavigationContainer theme={NavigationLightTheme}>
       <PaperProvider theme={PaperLightTheme}>
-        <RootNavigator />
+        <View />
       </PaperProvider>
     </NavigationContainer>
   );
