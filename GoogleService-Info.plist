@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>687341222872-f1l1iiqon9u55gq7quqni9m44vag4674.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.687341222872-f1l1iiqon9u55gq7quqni9m44vag4674</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCTgL28iUy4DOlSdzxUX_h0QUa3Kvk3pXE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>687341222872</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nasuft.SeeAndSay</string>
+	<key>PROJECT_ID</key>
+	<string>see-and-say-77500</string>
+	<key>STORAGE_BUCKET</key>
+	<string>see-and-say-77500.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:687341222872:ios:eb0455ab64d4ad1fff10ad</string>
+</dict>
+</plist>

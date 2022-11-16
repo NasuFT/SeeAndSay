@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "687341222872",
+    "project_id": "see-and-say-77500",
+    "storage_bucket": "see-and-say-77500.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687341222872:android:3c0d84fbe84784daff10ad",
+        "android_client_info": {
+          "package_name": "com.nasuft.SeeAndSay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687341222872-67cjait0954crnt22civuajoqkd5vqma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWAv-U_hRTDXX1xTnDM1IUi3SR-HUpx14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687341222872-67cjait0954crnt22civuajoqkd5vqma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
