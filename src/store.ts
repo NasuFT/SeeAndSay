@@ -1,7 +1,7 @@
 import { init, RematchDispatch, RematchRootState } from '@rematch/core';
 import loadingPlugin, { ExtraModelsFromLoading } from '@rematch/loading';
 import { models, RootModel } from '@/models';
-import Reactotron from 'reactotron-react-native';
+import Reactotron from '../reactotron.config';
 
 type FullModel = ExtraModelsFromLoading<RootModel>;
 
@@ -15,4 +15,4 @@ export const store = init<RootModel, FullModel>({
 
 export type Store = typeof store;
 export type Dispatch = RematchDispatch<RootModel>;
-export type RootState = RematchRootState<RootModel>;
+export type RootState = RematchRootState<RootModel, FullModel>;
