@@ -1791,15 +1791,15 @@
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
   integrity sha512-KrwSpS1tKI70wuKl68DwJZYEvXktDHdZMG0k2AXD/rJVSlB23/X2CB2cutVR0HwNMJIal9HOUOBB2rVfa6UGtQ==
 
+"@react-native/normalize-color@*", "@react-native/normalize-color@^2.0.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.1.0.tgz#939b87a9849e81687d3640c5efa2a486ac266f91"
+  integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
+
 "@react-native/normalize-color@2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.0.0.tgz#da955909432474a9a0fe1cbffc66576a0447f567"
   integrity sha512-Wip/xsc5lw8vsBlmY2MO/gFLp3MvuZ2baBZjDeTjjndMgM0h5sxz7AZR62RDPGgstp8Np7JzjvVqVT7tpFZqsw==
-
-"@react-native/normalize-color@^2.0.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.1.0.tgz#939b87a9849e81687d3640c5efa2a486ac266f91"
-  integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
 
 "@react-native/polyfills@2.0.0":
   version "2.0.0"
@@ -1858,6 +1858,13 @@
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@rematch/loading/-/loading-2.1.2.tgz#1dc680d445cd2d1234489cb69816278d02cf2216"
   integrity sha512-3fWUvWkIxP+BEi2LCKYKaUkMFCT0MDcN1xQD19tPNufMry7skqybahqm9/ugs9wIji1n3ObF7yHkrb01E+N3Tw==
+
+"@rematch/select@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@rematch/select/-/select-3.1.2.tgz#6f48ccaf2859024ae754cdde3515ecaf75f50766"
+  integrity sha512-ie1+P/xalAzVge68k4bfBIj5v1bQA2wuylx58vBPGnc+GLis8aUDmZfotndMRMVAGNnpg+noo/D0TvZaQmA2wQ==
+  dependencies:
+    reselect "^4.0.0"
 
 "@rneui/base@^4.0.0-rc.7":
   version "4.0.0-rc.7"
@@ -2045,6 +2052,14 @@
   version "15.7.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
+
+"@types/react-native-charts-wrapper@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native-charts-wrapper/-/react-native-charts-wrapper-0.5.2.tgz#212d3f8829c464deaedec0fb0ff5cf0751cf395e"
+  integrity sha512-ct8pmkh13s980Yj/cuxFdMJH3pi28/G5a+4DcZoPhIuHsmPadVOCDsfCh0E9PPFDfaZAK7sbK8zfjHCXNBygeQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
 
 "@types/react-native-vector-icons@^6.4.10":
   version "6.4.12"
@@ -3632,6 +3647,15 @@ depd@~1.1.2:
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==
 
+deprecated-react-native-prop-types@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/deprecated-react-native-prop-types/-/deprecated-react-native-prop-types-2.3.0.tgz#c10c6ee75ff2b6de94bb127f142b814e6e08d9ab"
+  integrity sha512-pWD0voFtNYxrVqvBMYf5gq3NA2GCpfodS1yNynTPc93AYA/KEMGeWDqqeUB6R2Z9ZofVhks2aeJXiuQqKNpesA==
+  dependencies:
+    "@react-native/normalize-color" "*"
+    invariant "*"
+    prop-types "*"
+
 destroy@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.2.0.tgz#4803735509ad8be552934c67df614f94e66fa015"
@@ -5125,7 +5149,7 @@ internal-slot@^1.0.3:
   resolved "https://registry.yarnpkg.com/internmap/-/internmap-2.0.3.tgz#6685f23755e43c524e251d29cbc97248e3061009"
   integrity sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==
 
-invariant@>=2, invariant@^2.2.2, invariant@^2.2.4:
+invariant@*, invariant@>=2, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -7014,7 +7038,7 @@ prompts@^2.3.2, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@15.8.1, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@*, prop-types@15.8.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -7150,6 +7174,15 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-native-charts-wrapper@^0.5.11:
+  version "0.5.11"
+  resolved "https://registry.yarnpkg.com/react-native-charts-wrapper/-/react-native-charts-wrapper-0.5.11.tgz#7a7016d28f0047691ee649678c58400a3e0f98ec"
+  integrity sha512-2Av6zowN22xF4N1XtGWz99p1pmu/bJ0xo2X82YzqkBgRogi2VLSIMTLpNo+YWBRUljQmzlGfsjdljib2Mh0EOQ==
+  dependencies:
+    deprecated-react-native-prop-types "^2.3.0"
+    prop-types "^15.8.1"
+    react "16.13.1"
 
 react-native-codegen@^0.70.6:
   version "0.70.6"
@@ -7345,6 +7378,15 @@ react-shallow-renderer@^16.15.0:
   dependencies:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0 || ^18.0.0"
+
+react@16.13.1:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
+  integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 react@18.1.0:
   version "18.1.0"
@@ -7547,7 +7589,7 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
 
-reselect@^4.0.0:
+reselect@^4.0.0, reselect@^4.1.7:
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.7.tgz#56480d9ff3d3188970ee2b76527bd94a95567a42"
   integrity sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==

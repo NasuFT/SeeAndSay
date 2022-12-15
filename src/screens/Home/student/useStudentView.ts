@@ -5,7 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Dispatch, RootState } from '@/store';
 import { Classroom, JoinClassroomFormData } from '@/types';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import api from '@/services';
 
 const classroomFormSchema: yup.ObjectSchema<JoinClassroomFormData> = yup
   .object({
@@ -22,10 +23,21 @@ const useStudentView = () => {
   const classrooms = useSelector((state: RootState) => state.classrooms.classrooms);
   const fetchClassrooms = dispatch.classrooms.fetchClassrooms;
 
-  const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
-    await dispatch.classrooms.joinClassroom(data.code);
+  // const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
+  //   await dispatch.classrooms.joinClassroom(data.code);
+  // };
+  // const handleUserJoinClassroom = handleSubmit(onSubmitForm);
+
+  const handleUserJoinClassroom = (onSubmit?: (data: JoinClassroomFormData) => void) => {
+    const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
+      await dispatch.classrooms.joinClassroom(data.code);
+      if (onSubmit) {
+        await onSubmit?.(data);
+      }
+    };
+
+    return handleSubmit(onSubmitForm);
   };
-  const handleUserJoinClassroom = handleSubmit(onSubmitForm);
 
   const isCreatingClassroom = useSelector(
     (state: RootState) => state.loading.effects.classrooms.joinClassroom
@@ -36,6 +48,30 @@ const useStudentView = () => {
   const dailyTask = useSelector((state: RootState) => state.tasks.task);
   const fetchDailyTask = dispatch.tasks.fetchDailyTask;
 
+  const submissions = useSelector((state: RootState) => state.classrooms.submissions);
+
+  const [canSubmit, setCanSubmit] = useState(false);
+
+  const user = useSelector((state: RootState) => state.users.user);
+
+  const checkSubmissions = useCallback(() => {
+    if (!dailyTask || !user) {
+      return;
+    }
+
+    const cb = async () => {
+      const { count } = await api.firestore.countUserTaskSubmissions(user.id, dailyTask.id);
+
+      if (count > 0) {
+        setCanSubmit(false);
+      } else {
+        setCanSubmit(true);
+      }
+    };
+
+    cb();
+  }, [dailyTask, user]);
+
   return {
     control,
     classrooms,
@@ -45,6 +81,8 @@ const useStudentView = () => {
     selectClassroom,
     dailyTask,
     fetchDailyTask,
+    canSubmit,
+    checkSubmissions,
   };
 };
 

@@ -1,12 +1,12 @@
 import { Dispatch, RootState } from '@/store';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const useSubmissionInfoContainer = () => {
   const dispatch = useDispatch<Dispatch>();
 
+  const fetchSubmissions = dispatch.classrooms.fetchEnrolleeSubmissions;
   const submissions = useSelector((state: RootState) => state.classrooms.submissions);
-
-  const fetchSubmissions = dispatch.classrooms.fetchSubmissions;
 
   return { submissions, fetchSubmissions };
 };

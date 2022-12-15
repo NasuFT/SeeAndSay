@@ -37,7 +37,7 @@ const TaskOfTheDay = ({
         style={{
           marginHorizontal: 16,
           marginTop: 16,
-          backgroundColor: theme.colors.primaryContainer,
+          backgroundColor: disabled ? theme.colors.surfaceDisabled : theme.colors.primaryContainer,
           borderRadius: 16,
           overflow: 'hidden',
         }}>

@@ -1,15 +1,59 @@
 import { startOfToday } from 'date-fns';
 import firestore from '@react-native-firebase/firestore';
 import { TASKS_COLLECTION } from '../constants';
-import { Task } from '@/types';
+import { APITask, Task } from '@/types';
+import { getRandomValues } from '@/utils/random';
+import { omit, random } from 'lodash';
 
-const createTask = (id: string, title: string, date: Date, game: {}) => {
-  const task: Task = {
-    id,
-    title,
-    date,
-    game,
+const uploadTask = async (task: Task) => {
+  const randomValues = getRandomValues(5);
+
+  const toUploadTask: APITask = {
+    ...task,
+    //@ts-ignore
+    timestamp: firestore.FieldValue.serverTimestamp(),
+    random: {
+      1: randomValues[0],
+      2: randomValues[1],
+      3: randomValues[2],
+      4: randomValues[3],
+      5: randomValues[4],
+    },
   };
+
+  const document = await firestore().collection(TASKS_COLLECTION).add(toUploadTask);
+
+  return document.id;
+};
+
+const getRandomTask = async () => {
+  const randomValue = getRandomValues(1)[0];
+  const randomIndex = random(1, 5);
+
+  let query = await firestore()
+    .collection(TASKS_COLLECTION)
+    .where(`random.${randomIndex}`, '<=', randomValue)
+    .orderBy(`random.${randomIndex}`, 'desc')
+    .limit(1)
+    .get();
+
+  if (query.empty) {
+    query = await firestore()
+      .collection(TASKS_COLLECTION)
+      .where(`random.${randomIndex}`, '>=', randomValue)
+      .orderBy(`random.${randomIndex}`)
+      .limit(1)
+      .get();
+  }
+
+  const document = query.docs[0];
+  const data = document.data() as APITask;
+  const task = {
+    ...omit(data, 'random'),
+    // @ts-ignore
+    timestamp: data.timestamp.toDate(),
+    submissionDate: startOfToday(),
+  } as Task;
 
   return task;
 };
@@ -18,21 +62,22 @@ export const getDailyTask = async () => {
   const dateToday = startOfToday();
   const query = await firestore()
     .collection(TASKS_COLLECTION)
-    .where('submissionDate', '==', dateToday)
+    .where('submissionDate', '==', firestore.Timestamp.fromDate(dateToday))
     .orderBy('timestamp', 'desc')
     .limit(1)
     .get();
   const documents = query.docs;
 
-  if (documents.length <= 0) {
-    const document = firestore().collection(TASKS_COLLECTION).doc();
-    const newDailyTask = createTask(document.id, 'Placeholder Title', dateToday, {});
+  if (query.empty) {
+    const newDailyTask = await getRandomTask();
 
-    await document.set(newDailyTask);
-    return newDailyTask;
+    await uploadTask(newDailyTask);
+    return {
+      ...newDailyTask,
+      timestamp: new Date(),
+    } as Task;
   }
 
-  console.log(documents.map((document) => document.data()));
   const data = documents[0].data();
   const dailyTask = {
     ...data,

@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ScrollingScreen } from '@/components';
 import GameCounter from '../components/GameCounter';
 import Timer from '../components/Timer';
@@ -34,13 +34,20 @@ const Classic = ({ game, images, onSubmit }: Props) => {
   const isFinalRound = useMemo(() => round === rounds, [round, rounds]);
 
   const [input, _setInput] = useState('');
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [answers, _setAnswers] = useState<string[]>([]);
   const inputRef = useRef(input);
+  const answersRef = useRef(answers);
 
   const setInput = (value: string) => {
     inputRef.current = value;
     _setInput(value);
   };
+
+  const setAnswers = (value: string[]) => {
+    answersRef.current = value;
+    _setAnswers(value);
+  };
+
   useLayoutEffect(() => {
     startTimer();
 
@@ -51,7 +58,7 @@ const Classic = ({ game, images, onSubmit }: Props) => {
   const handlePress = useCallback(async () => {
     if (isFinalRound) {
       try {
-        const data: SubmissionDataClassic = answers
+        const data: SubmissionDataClassic = answersRef.current
           .concat([inputRef.current])
           .map((answer) => ({ answer }));
         setIsSubmitting(true);
@@ -62,7 +69,7 @@ const Classic = ({ game, images, onSubmit }: Props) => {
       return;
     }
 
-    const newAnswers = answers.concat([inputRef.current]);
+    const newAnswers = answersRef.current.concat([inputRef.current]);
     setRound((round) => round + 1);
     setAnswers(newAnswers);
     setInput('');

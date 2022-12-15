@@ -1,5 +1,6 @@
+import api from '@/services';
 import { Dispatch, RootState } from '@/store';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const useTeacherView = () => {
@@ -9,10 +10,15 @@ const useTeacherView = () => {
   const fetchEnrolls = dispatch.classrooms.fetchEnrollees;
   const setEnrollee = dispatch.classrooms.setEnrollee;
 
-  const submissions = useSelector((state: RootState) => state.classrooms.submissions);
-  const fetchGrades = dispatch.classrooms.fetchGrades;
+  const dailyTaskSubmissions = useSelector(
+    (state: RootState) => state.classrooms.dailyTaskSubmissions
+  );
+  const fetchGrades = dispatch.classrooms.fetchDailyTaskSubmissions;
 
-  const grades = useMemo(() => submissions.map((submission) => submission.grade), [submissions]);
+  const grades = useMemo(
+    () => dailyTaskSubmissions.map((submission) => submission.grade),
+    [dailyTaskSubmissions]
+  );
 
   return { enrollees, fetchEnrolls, setEnrollee, fetchGrades, grades };
 };

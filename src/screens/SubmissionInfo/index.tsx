@@ -1,6 +1,8 @@
+import { Screen } from '@/components';
 import { FlashList } from '@shopify/flash-list';
 import { useEffect } from 'react';
 import { Text } from 'react-native-paper';
+import GradeChart from './components/GradeChart';
 import useSubmissionInfoContainer from './useSubmissionInfoContainer';
 
 const SubmissionInfo = () => {
@@ -11,11 +13,9 @@ const SubmissionInfo = () => {
   }, []);
 
   return (
-    <FlashList
-      estimatedItemSize={15}
-      data={submissions}
-      renderItem={({ item }) => <Text>Last 5 grades here</Text>}
-    />
+    <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
+      <GradeChart data={submissions} style={{ height: 400 }} />
+    </Screen>
   );
 };
 

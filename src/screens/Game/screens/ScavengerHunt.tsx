@@ -34,12 +34,17 @@ const ScavengerHunt = ({ game, images, onSubmit }: Props) => {
   const isFinalRound = useMemo(() => round === rounds, [round]);
 
   const [input, _setInput] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [answers, setAnswers] = useState<{ x: number; y: number }[]>([]);
+  const [answers, _setAnswers] = useState<{ x: number; y: number }[]>([]);
   const inputRef = useRef(input);
+  const answersRef = useRef(answers);
 
   const setInput = (value: { x: number; y: number }) => {
     inputRef.current = value;
     _setInput(value);
+  };
+  const setAnswers = (value: { x: number; y: number }[]) => {
+    answersRef.current = value;
+    _setAnswers(value);
   };
   useLayoutEffect(() => {
     startTimer();
@@ -78,10 +83,6 @@ const ScavengerHunt = ({ game, images, onSubmit }: Props) => {
       ),
     });
   }, [isFinalRound]);
-
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
 
   return (
     <ScrollingScreen

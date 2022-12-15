@@ -9,6 +9,7 @@ interface State {
   classroom: Classroom | null;
   enrollees: Enroll[];
   enrollee: Enroll | null;
+  dailyTaskSubmissions: SubmissionInfo[];
   submissions: SubmissionInfo[];
 }
 
@@ -19,6 +20,7 @@ export const classrooms = createModel<RootModel>()({
     enrollees: [],
     enrollee: null,
     submissions: [],
+    dailyTaskSubmissions: [],
   } as State,
   reducers: {
     setClassrooms(state, payload: Classroom[]) {
@@ -31,6 +33,7 @@ export const classrooms = createModel<RootModel>()({
       return {
         ...state,
         classroom: payload,
+        enrollees: [],
       };
     },
     setEnrollees(state, payload: Enroll[]) {
@@ -43,12 +46,19 @@ export const classrooms = createModel<RootModel>()({
       return {
         ...state,
         enrollee: payload,
+        submissions: [],
       };
     },
     setSubmissions(state, payload: SubmissionInfo[]) {
       return {
         ...state,
         submissions: payload,
+      };
+    },
+    setDailyTaskSubmissions(state, payload: SubmissionInfo[]) {
+      return {
+        ...state,
+        dailyTaskSubmissions: payload,
       };
     },
   },
@@ -78,6 +88,9 @@ export const classrooms = createModel<RootModel>()({
         if (!user) {
           throw new Error('No user selected!');
         }
+        if (user.type !== 'teacher') {
+          throw new Error('User must be a teacher to create classrooms!');
+        }
 
         await api.firestore.createClassroom(user.id, name);
         await dispatch.classrooms.fetchClassrooms();
@@ -91,6 +104,9 @@ export const classrooms = createModel<RootModel>()({
 
         if (!user) {
           throw new Error('No user selected!');
+        }
+        if (user.type !== 'student') {
+          throw new Error('User must be a student to create classrooms');
         }
 
         await api.firestore.joinClassroom(user.id, code);
@@ -112,7 +128,7 @@ export const classrooms = createModel<RootModel>()({
         alert(error);
       }
     },
-    async fetchSubmissions(_: void, state) {
+    async fetchEnrolleeSubmissions(_: void, state) {
       try {
         const enrollee = state.classrooms.enrollee;
         if (!enrollee) {
@@ -126,9 +142,16 @@ export const classrooms = createModel<RootModel>()({
         alert(error);
       }
     },
-    async fetchGrades(taskId: string) {
+    async fetchDailyTaskSubmissions(_: void, state) {
       try {
-        const task = await getTaskById(taskId);
+        const dailyTask = state.tasks.task;
+        if (!dailyTask) {
+          throw new Error('No daily task found!');
+        }
+
+        const submissions = await api.firestore.getTaskSubmissions(dailyTask.id);
+
+        dispatch.classrooms.setDailyTaskSubmissions(submissions);
       } catch (error) {
         alert(error);
       }

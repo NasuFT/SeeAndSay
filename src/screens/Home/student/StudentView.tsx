@@ -1,7 +1,7 @@
 import { useLayoutEffect, useEffect, useState } from 'react';
-import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { AnimatedFAB, Dialog, Portal } from 'react-native-paper';
+import { NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { AnimatedFAB, Dialog, List, Portal } from 'react-native-paper';
 import { Item } from 'react-navigation-header-buttons';
 
 import { Button, MaterialHeaderButtons, Screen } from '@/components';
@@ -11,7 +11,6 @@ import ClassroomsList from '../components/ClassroomsList';
 import useStudentView from './useStudentView';
 import JoinClassroomForm from './JoinClassroomForm';
 import TaskOfTheDay from '../components/TaskOfTheDay';
-import { loadImages } from '@/utils/image';
 
 const StudentView = () => {
   const navigation = useNavigation<RootStackScreenProps<'Home'>['navigation']>();
@@ -57,11 +56,12 @@ const StudentView = () => {
     isCreatingClassroom,
     fetchClassrooms,
     selectClassroom,
+    canSubmit,
+    checkSubmissions,
     dailyTask,
     fetchDailyTask,
   } = useStudentView();
-  const onDialogPressJoin = async () => {
-    await handleUserJoinClassroom();
+  const onDialogPressJoin = () => {
     hideDialog();
   };
 
@@ -70,9 +70,9 @@ const StudentView = () => {
     fetchClassrooms();
   }, []);
 
-  useEffect(() => {
-    console.log(dailyTask);
-  }, [dailyTask]);
+  useFocusEffect(() => {
+    checkSubmissions();
+  });
 
   const handlePressDailyTask = async () => {
     if (!dailyTask) {
@@ -85,19 +85,14 @@ const StudentView = () => {
   return (
     <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
       <TaskOfTheDay
-        disabled={!dailyTask}
+        disabled={!dailyTask || !canSubmit}
         style={{ marginTop: 16 }}
         task={dailyTask}
         onPress={handlePressDailyTask}
       />
-      <ClassroomsList
-        data={classrooms}
-        onItemPress={(_, data) => {
-          selectClassroom(data);
-          navigation.navigate('Classroom');
-        }}
-        onScroll={onScrollScreen}
-      />
+      <View style={{ height: 24 }} />
+      <List.Subheader>Classrooms</List.Subheader>
+      <ClassroomsList data={classrooms} onScroll={onScrollScreen} />
       <AnimatedFAB
         label="Join"
         icon="plus"
@@ -118,7 +113,7 @@ const StudentView = () => {
               Cancel
             </Button>
             <Button
-              onPress={onDialogPressJoin}
+              onPress={handleUserJoinClassroom(onDialogPressJoin)}
               disabled={isCreatingClassroom}
               loading={isCreatingClassroom}>
               Join

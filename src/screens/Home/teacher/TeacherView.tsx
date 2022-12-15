@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { AnimatedFAB, Dialog, Menu, Portal, Snackbar } from 'react-native-paper';
+import { AnimatedFAB, Dialog, List, Menu, Portal, Snackbar } from 'react-native-paper';
 import { Item } from 'react-navigation-header-buttons';
 import * as Clipboard from 'expo-clipboard';
 
@@ -71,10 +71,8 @@ const TeacherView = () => {
     isCreatingClassroom,
     fetchClassrooms,
     selectClassroom,
-    classroom,
   } = useTeacherView();
-  const onDialogPressCreate = async () => {
-    await handleUserCreateClassroom();
+  const onDialogPressCreate = () => {
     hideDialog();
   };
 
@@ -95,6 +93,8 @@ const TeacherView = () => {
 
   return (
     <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
+      <View style={{ height: 8 }} />
+      <List.Subheader>Classrooms</List.Subheader>
       <ClassroomsList
         data={classrooms}
         onItemPress={(_, data) => {
@@ -134,7 +134,7 @@ const TeacherView = () => {
               Cancel
             </Button>
             <Button
-              onPress={onDialogPressCreate}
+              onPress={handleUserCreateClassroom(onDialogPressCreate)}
               disabled={isCreatingClassroom}
               loading={isCreatingClassroom}>
               Create

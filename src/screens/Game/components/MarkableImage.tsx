@@ -140,7 +140,6 @@ const MarkableImage = ({ imageSource, style, onValueChange }: Props) => {
           }}
           onLayout={(e) => {
             const { width, height } = e.nativeEvent.layout;
-            console.log(width, height);
             containerWidth.value = width;
             containerHeight.value = height;
           }}>

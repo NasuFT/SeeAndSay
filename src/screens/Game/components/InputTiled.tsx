@@ -11,7 +11,7 @@ import {
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import InputTile from './InputTile';
 import { useFocusEffect } from '@react-navigation/native';
-import { isAllLetter } from '@/utils/string';
+import { isAllLetter } from '@/utils/helper';
 
 interface Props {
   length: number;

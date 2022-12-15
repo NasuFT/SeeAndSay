@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Dispatch, RootState } from '@/store';
 import { Classroom, CreateClassroomFormData } from '@/types';
+import { useEffect } from 'react';
 
 const classroomFormSchema: yup.ObjectSchema<CreateClassroomFormData> = yup
   .object({
@@ -23,10 +24,23 @@ const useTeacherView = () => {
 
   const fetchClassrooms = dispatch.classrooms.fetchClassrooms;
 
-  const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
-    await dispatch.classrooms.createClassroom(data.name);
+  // const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
+  //   await dispatch.selection.createClassroom(data.name);
+  // };
+  // const handleUserCreateClassroom = handleSubmit(onSubmitForm);
+
+  const handleUserCreateClassroom = (
+    onSubmit?: (data: CreateClassroomFormData) => void | Promise<void>
+  ) => {
+    const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
+      await dispatch.classrooms.createClassroom(data.name);
+      if (onSubmit) {
+        await onSubmit?.(data);
+      }
+    };
+
+    return handleSubmit(onSubmitForm);
   };
-  const handleUserCreateClassroom = handleSubmit(onSubmitForm);
 
   const isCreatingClassroom = useSelector(
     (state: RootState) => state.loading.effects.classrooms.createClassroom
@@ -34,6 +48,10 @@ const useTeacherView = () => {
 
   const classroom = useSelector((state: RootState) => state.classrooms.classroom);
   const selectClassroom = dispatch.classrooms.setClassroom;
+
+  useEffect(() => {
+    dispatch.tasks.fetchDailyTask();
+  }, []);
 
   return {
     control,

@@ -1,7 +1,7 @@
 import { Button, Screen } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
 import { GameType } from '@/types';
-import { loadImages } from '@/utils/image';
+import { loadImages } from '@/utils/helper';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { useState } from 'react';

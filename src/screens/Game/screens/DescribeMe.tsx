@@ -38,11 +38,17 @@ const DescribeMe = ({ game, images, onSubmit }: Props) => {
   const valueRef = useRef(value);
   const [currentRound, setCurrentRound] = useState(1);
   const isFinalRound = useMemo(() => currentRound === rounds, [currentRound, rounds]);
-  const [answers, setAnswers] = useState<string[][]>([]);
+  const [answers, _setAnswers] = useState<string[][]>([]);
+  const answersRef = useRef(answers);
 
   const setValue = (value: string[]) => {
     valueRef.current = value;
     _setValue(value);
+  };
+
+  const setAnswers = (value: string[][]) => {
+    answersRef.current = value;
+    _setAnswers(value);
   };
 
   const currentGameItem = useMemo(() => data[currentRound - 1], [data, currentRound]);
@@ -52,7 +58,7 @@ const DescribeMe = ({ game, images, onSubmit }: Props) => {
   const handlePress = useCallback(async () => {
     if (isFinalRound) {
       try {
-        const data: SubmissionDataDescribeMe = answers
+        const data: SubmissionDataDescribeMe = answersRef.current
           .concat([valueRef.current])
           .map((answers) => ({ answers }));
         setIsSubmitting(true);
@@ -63,7 +69,7 @@ const DescribeMe = ({ game, images, onSubmit }: Props) => {
       return;
     }
 
-    const newAnswers = answers.concat([valueRef.current]);
+    const newAnswers = answersRef.current.concat([valueRef.current]);
     setAnswers(newAnswers);
     setCurrentRound((round) => round + 1);
     setValue([]);

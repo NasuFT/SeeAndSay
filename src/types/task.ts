@@ -10,3 +10,13 @@ export interface Task extends TaskInfo {
   submissionDate: Date;
   timestamp: Date;
 }
+
+export interface APITask extends Task {
+  random: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number; 
+  };
+}

@@ -1,5 +1,5 @@
 import { Classroom, Enroll } from '@/types';
-import { generateCode } from '@/utils/code';
+import { generateCode } from '@/utils/helper';
 import firestore from '@react-native-firebase/firestore';
 import { chunk } from 'lodash';
 import { CLASSROOMS_COLLECTION, ENROLLS_COLLECTION } from '../constants';

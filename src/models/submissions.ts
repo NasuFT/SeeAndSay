@@ -8,7 +8,7 @@ interface State {
   time: number;
 }
 
-const submissions = createModel<RootModel>()({
+export const submissions = createModel<RootModel>()({
   state: { data: [], time: -1 } as State,
   reducers: {
     setSubmission(state, payload: any[]) {
@@ -48,5 +48,3 @@ const submissions = createModel<RootModel>()({
     },
   }),
 });
-
-export default submissions;

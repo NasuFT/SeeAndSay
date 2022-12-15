@@ -5,7 +5,7 @@ import {
   SubmissionInfo,
   Task,
 } from '@/types';
-import { getMatchingCharacters } from '@/utils/string';
+import { getMatchingCharacters } from '@/utils/helper';
 import firestore from '@react-native-firebase/firestore';
 import { SUBMISSIONS_COLLECTION } from '../constants';
 import { getTaskById } from './tasks';
@@ -128,10 +128,12 @@ export const getUserSubmission = async (userId: string, taskId: string) => {
   return submission;
 };
 
-export const getUserSubmissions = async (userId: string) => {
+export const getUserSubmissions = async (userId: string, limit = 5) => {
   const query = await firestore()
     .collection(SUBMISSIONS_COLLECTION)
     .where('user.id', '==', userId)
+    .orderBy('timestamp', 'asc')
+    .limitToLast(limit)
     .get();
   const documents = query.docs;
 
@@ -139,7 +141,7 @@ export const getUserSubmissions = async (userId: string) => {
     const data = document.data();
     const submission = {
       ...data,
-      timestamp: data.timestamp.toDate(0),
+      timestamp: data.timestamp.toDate(),
     } as SubmissionInfo;
     return submission;
   });
@@ -156,4 +158,15 @@ export const getTaskSubmissions = async (taskId: string) => {
   const data = query.docs.map((doc) => doc.data() as SubmissionInfo);
 
   return data;
+};
+
+export const countUserTaskSubmissions = async (userId: string, taskId: string) => {
+  return (
+    await firestore()
+      .collection(SUBMISSIONS_COLLECTION)
+      .where('task.id', '==', taskId)
+      .where('user.id', '==', userId)
+      .count()
+      .get()
+  ).data();
 };

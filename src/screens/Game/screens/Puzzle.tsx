@@ -33,12 +33,17 @@ const Puzzle = ({ game, images, onSubmit }: Props) => {
   const isFinalRound = useMemo(() => round === rounds, [round]);
 
   const [input, _setInput] = useState<number[]>([]);
-  const [answers, setAnswers] = useState<number[][]>([]);
+  const [answers, _setAnswers] = useState<number[][]>([]);
   const inputRef = useRef(input);
+  const answersRef = useRef(answers);
 
   const setInput = (value: number[]) => {
     inputRef.current = value;
     _setInput(value);
+  };
+  const setAnswers = (value: number[][]) => {
+    answersRef.current = value;
+    _setAnswers(value);
   };
   useLayoutEffect(() => {
     startTimer();
@@ -77,10 +82,6 @@ const Puzzle = ({ game, images, onSubmit }: Props) => {
       ),
     });
   }, [isFinalRound, isSubmitting]);
-
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
 
   return (
     <ScrollingScreen

@@ -1,6 +1,6 @@
 import { Models } from '@rematch/core';
 import { classrooms } from './classrooms';
-import submissions from './submissions';
+import { submissions } from './submissions';
 import { tasks } from './tasks';
 import { users } from './users';
 
