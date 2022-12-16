@@ -1,8 +1,8 @@
-import { getFullName } from '@/screens/Profile/helper';
-import { Enroll } from '@/types';
-import { FlashList } from '@shopify/flash-list';
 import { GestureResponderEvent } from 'react-native';
 import { List } from 'react-native-paper';
+import { FlashList } from '@shopify/flash-list';
+
+import { Enroll } from '@/types';
 
 interface Props<T> {
   data: T[];
@@ -17,7 +17,7 @@ const EnrollList = ({ data, onItemLongPress, onItemPress }: Props<Enroll>) => {
       estimatedItemSize={12}
       renderItem={({ item }) => (
         <List.Item
-          title={getFullName(item.student.firstName, item.student.lastName)}
+          title={`${item.student.lastName}, ${item.student.firstName}`}
           // @ts-ignore
           onPress={(e) => onItemPress?.(e, item)}
           onLongPress={(e) => onItemLongPress?.(e, item)}

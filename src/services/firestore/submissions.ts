@@ -149,6 +149,29 @@ export const getUserSubmissions = async (userId: string, limit = 5) => {
   return submissions;
 };
 
+export const getNonDailyTaskUserSubmission = async (userId: string, dailyTaskId: string) => {
+  const query = await firestore()
+    .collection(SUBMISSIONS_COLLECTION)
+    .where('user.id', '==', userId)
+    .where('task.id', '!=', dailyTaskId)
+    .orderBy('timestamp')
+    .limitToLast(1)
+    .get();
+
+  if (query.empty) {
+    return null;
+  }
+
+  const data = query.docs[0].data();
+  const submission = {
+    ...data,
+    timestamp: data.timestamp.toDate(),
+    submissionDate: data.submissionDate.toDate(),
+  } as Task;
+
+  return submission;
+};
+
 export const getTaskSubmissions = async (taskId: string) => {
   const query = await firestore()
     .collection(SUBMISSIONS_COLLECTION)

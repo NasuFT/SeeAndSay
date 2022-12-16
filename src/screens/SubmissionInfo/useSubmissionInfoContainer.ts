@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 const useSubmissionInfoContainer = () => {
   const dispatch = useDispatch<Dispatch>();
 
-  const fetchSubmissions = dispatch.classrooms.fetchEnrolleeSubmissions;
-  const submissions = useSelector((state: RootState) => state.classrooms.submissions);
+  const fetchSubmissions = dispatch.selects.fetchEnrolleeSubmissions;
+  const submissions = useSelector((state: RootState) => state.selects.submissions);
 
   return { submissions, fetchSubmissions };
 };

@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { millisecondsToSeconds } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
+import { Item } from 'react-navigation-header-buttons';
+
 import { MaterialHeaderButtons, ScrollingScreen } from '@/components';
+import useTimer from '@/hooks/useTimer';
+import { GameInfo } from '@/types/game';
+import { SubmissionDataDescribeMe } from '@/types';
+import { RootStackScreenProps } from '@/navigators/types';
+
 import GameCounter from '../components/GameCounter';
 import Timer from '../components/Timer';
 import SingleImage from '../components/SingleImage';
-import useTimer from '@/hooks/useTimer';
-import { millisecondsToSeconds } from 'date-fns';
-import { GameInfo } from '@/types/game';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackScreenProps } from '@/navigators/types';
-import { Item } from 'react-navigation-header-buttons';
 import FourChoices from '../components/FourChoices';
-import { SubmissionDataDescribeMe } from '@/types';
 
 interface Props {
   game: GameInfo;

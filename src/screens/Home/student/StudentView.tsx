@@ -55,7 +55,6 @@ const StudentView = () => {
     handleUserJoinClassroom,
     isCreatingClassroom,
     fetchClassrooms,
-    selectClassroom,
     canSubmit,
     checkSubmissions,
     dailyTask,

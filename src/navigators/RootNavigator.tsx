@@ -33,8 +33,16 @@ const RootNavigator = () => {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Classroom" component={Classroom} />
           <Stack.Screen name="Game" component={Game} />
-          <Stack.Screen name="GamePrepare" component={GamePrepare} />
-          <Stack.Screen name="SubmissionInfo" component={SubmissionInfo} options={{headerTitle: 'Grade Info'}} />
+          <Stack.Screen
+            name="GamePrepare"
+            component={GamePrepare}
+            options={{ headerTitle: 'Preparation' }}
+          />
+          <Stack.Screen
+            name="SubmissionInfo"
+            component={SubmissionInfo}
+            options={{ headerTitle: 'Grade Info' }}
+          />
         </Stack.Group>
       )}
     </Stack.Navigator>

@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { MaterialHeaderButtons, ScrollingScreen } from '@/components';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { millisecondsToSeconds } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
+
+import { Button, ScrollingScreen } from '@/components';
+import useTimer from '@/hooks/useTimer';
+import { GameInfo, SubmissionDataFourPicsOneWord } from '@/types';
+import { RootStackScreenProps } from '@/navigators/types';
+
 import GameCounter from '../components/GameCounter';
 import Timer from '../components/Timer';
-import SingleImage from '../components/SingleImage';
 import InputTiled from '../components/InputTiled';
-import useTimer from '@/hooks/useTimer';
-import { millisecondsToSeconds } from 'date-fns';
-import { GameInfo } from '@/types/game';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackScreenProps } from '@/navigators/types';
-import { Item } from 'react-navigation-header-buttons';
 import FourImages from '../components/FourImages';
-import { SubmissionDataFourPicsOneWord } from '@/types';
 
 interface Props {
   game: GameInfo;
@@ -82,13 +81,9 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <MaterialHeaderButtons>
-          <Item
-            title={isFinalRound ? 'Submit' : 'Next'}
-            onPress={handlePress}
-            disabled={isSubmitting}
-          />
-        </MaterialHeaderButtons>
+        <Button onPress={handlePress} disabled={isSubmitting} loading={isSubmitting}>
+          {isFinalRound ? 'Submit' : 'Next'}
+        </Button>
       ),
     });
   }, [isFinalRound, isSubmitting]);

@@ -1,13 +1,15 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ScrollingScreen } from '@/components';
-import GameCounter from '../components/GameCounter';
-import Timer from '../components/Timer';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { millisecondsToSeconds } from 'date-fns';
-import { GameInfo, SubmissionDataPuzzle } from '@/types';
 import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-paper';
+
+import { ScrollingScreen } from '@/components';
+import { GameInfo, SubmissionDataPuzzle } from '@/types';
 import { RootStackScreenProps } from '@/navigators/types';
 import { useTimer } from '@/hooks';
-import { Button } from 'react-native-paper';
+
+import GameCounter from '../components/GameCounter';
+import Timer from '../components/Timer';
 import SortableSplitImage from '../components/SortableSplitImage';
 
 interface Props {

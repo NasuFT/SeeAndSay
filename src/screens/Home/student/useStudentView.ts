@@ -4,8 +4,8 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Dispatch, RootState } from '@/store';
-import { Classroom, JoinClassroomFormData } from '@/types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { JoinClassroomFormData } from '@/types';
+import { useCallback, useState } from 'react';
 import api from '@/services';
 
 const classroomFormSchema: yup.ObjectSchema<JoinClassroomFormData> = yup
@@ -15,22 +15,30 @@ const classroomFormSchema: yup.ObjectSchema<JoinClassroomFormData> = yup
   .required();
 
 const useStudentView = () => {
-  const { control, handleSubmit } = useForm<JoinClassroomFormData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<JoinClassroomFormData>({
     resolver: yupResolver(classroomFormSchema),
   });
   const dispatch = useDispatch<Dispatch>();
 
-  const classrooms = useSelector((state: RootState) => state.classrooms.classrooms);
-  const fetchClassrooms = dispatch.classrooms.fetchClassrooms;
+  const user = useSelector((state: RootState) => state.users.user);
+
+  const classrooms = useSelector((state: RootState) => state.selects.classrooms);
+  const fetchClassrooms = dispatch.selects.fetchClassrooms;
 
   // const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
-  //   await dispatch.classrooms.joinClassroom(data.code);
+  //   await dispatch.selects.joinClassroom(data.code);
   // };
   // const handleUserJoinClassroom = handleSubmit(onSubmitForm);
 
-  const handleUserJoinClassroom = (onSubmit?: (data: JoinClassroomFormData) => void) => {
+  const handleUserJoinClassroom = (
+    onSubmit?: (data: JoinClassroomFormData) => void | Promise<void>
+  ) => {
     const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
-      await dispatch.classrooms.joinClassroom(data.code);
+      await dispatch.selects.joinClassroom(data.code);
       if (onSubmit) {
         await onSubmit?.(data);
       }
@@ -39,20 +47,12 @@ const useStudentView = () => {
     return handleSubmit(onSubmitForm);
   };
 
-  const isCreatingClassroom = useSelector(
-    (state: RootState) => state.loading.effects.classrooms.joinClassroom
-  );
-
-  const selectClassroom = dispatch.classrooms.setClassroom;
+  const isCreatingClassroom = isSubmitting;
 
   const dailyTask = useSelector((state: RootState) => state.tasks.task);
   const fetchDailyTask = dispatch.tasks.fetchDailyTask;
 
-  const submissions = useSelector((state: RootState) => state.classrooms.submissions);
-
   const [canSubmit, setCanSubmit] = useState(false);
-
-  const user = useSelector((state: RootState) => state.users.user);
 
   const checkSubmissions = useCallback(() => {
     if (!dailyTask || !user) {
@@ -78,7 +78,6 @@ const useStudentView = () => {
     fetchClassrooms,
     handleUserJoinClassroom,
     isCreatingClassroom,
-    selectClassroom,
     dailyTask,
     fetchDailyTask,
     canSubmit,

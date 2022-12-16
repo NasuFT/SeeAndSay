@@ -13,7 +13,7 @@ interface State {
   submissions: SubmissionInfo[];
 }
 
-export const classrooms = createModel<RootModel>()({
+export const selects = createModel<RootModel>()({
   state: {
     classrooms: [],
     classroom: null,
@@ -117,7 +117,7 @@ export const classrooms = createModel<RootModel>()({
     },
     async fetchEnrollees(_: void, state) {
       try {
-        const classroom = state.classrooms.classroom;
+        const classroom = state.selects.classroom;
         if (!classroom) {
           throw new Error('No classroom selected!');
         }
@@ -130,7 +130,7 @@ export const classrooms = createModel<RootModel>()({
     },
     async fetchEnrolleeSubmissions(_: void, state) {
       try {
-        const enrollee = state.classrooms.enrollee;
+        const enrollee = state.selects.enrollee;
         if (!enrollee) {
           throw new Error('No enrollee selected!');
         }

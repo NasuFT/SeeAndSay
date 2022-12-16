@@ -1,8 +1,8 @@
-import { groupBy, mapKeys, countBy, map } from 'lodash';
 import { useMemo } from 'react';
 import { StyleProp, ViewStyle, View } from 'react-native';
 import { BarChart, BarData, BarValue } from 'react-native-charts-wrapper';
 import { Text } from 'react-native-paper';
+import { countBy, map } from 'lodash';
 
 interface Props {
   data: number[];

@@ -1,9 +1,10 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+import { RootStackScreenProps } from '@/navigators/types';
 import useGameContainer from './useGameContainer';
 import Classic from './screens/Classic';
 import FourPicsOneWord from './screens/FourPicsOneWord';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackScreenProps } from '@/navigators/types';
 import DescribeMe from './screens/DescribeMe';
 import Puzzle from './screens/Puzzle';
 import ScavengerHunt from './screens/ScavengerHunt';

@@ -1,6 +1,6 @@
-import { Dispatch, RootState } from '@/store';
-import { Task } from '@/types';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { Dispatch, RootState } from '@/store';
 
 const useGameContainer = () => {
   const dispatch = useDispatch<Dispatch>();
