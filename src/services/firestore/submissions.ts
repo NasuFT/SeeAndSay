@@ -2,10 +2,11 @@ import {
   SubmissionDataClassic,
   SubmissionDataDescribeMe,
   SubmissionDataPuzzle,
+  SubmissionDataScavengerHunt,
   SubmissionInfo,
   Task,
 } from '@/types';
-import { getMatchingCharacters } from '@/utils/helper';
+import { getMatchingCharacters, interpolate } from '@/utils/helper';
 import firestore from '@react-native-firebase/firestore';
 import { SUBMISSIONS_COLLECTION } from '../constants';
 import { getTaskById } from './tasks';
@@ -72,7 +73,18 @@ const computeGrade = (task: Task, submissionData: any[]) => {
 
     return (correctPositions / totalPositions) * 100;
   } else {
-    return 0;
+    const data = submissionData as SubmissionDataScavengerHunt;
+    const grades = data.map(({ answer }, index) => {
+      const gameAnswer = gameData[index].answer;
+      const distance = Math.pow(
+        Math.pow(answer.x - gameAnswer.x, 2) + Math.pow(answer.y - gameAnswer.y, 2),
+        0.5
+      );
+
+      return interpolate(distance, [5, 100], [100, 0]);
+    });
+    const sumGrades = grades.reduce((acc, val) => acc + val, 0);
+    return sumGrades / gameData.length;
   }
 };
 
@@ -91,7 +103,7 @@ export const createTaskSubmission = async ({
     timestamp: firestore.FieldValue.serverTimestamp(),
     task: {
       id: taskId,
-      title: task.title,
+      title: task.game.title,
       submissionDate: task.submissionDate,
     },
     type: task.game.type,
@@ -142,6 +154,10 @@ export const getUserSubmissions = async (userId: string, limit = 5) => {
     const submission = {
       ...data,
       timestamp: data.timestamp.toDate(),
+      task: {
+        ...data.task,
+        submissionDate: data.task.submissionDate.toDate(),
+      },
     } as SubmissionInfo;
     return submission;
   });
@@ -192,4 +208,27 @@ export const countUserTaskSubmissions = async (userId: string, taskId: string) =
       .count()
       .get()
   ).data();
+};
+
+export const getSubmissionById = async (submissionId: string) => {
+  const query = await firestore()
+    .collection(SUBMISSIONS_COLLECTION)
+    .where('id', '==', submissionId)
+    .get();
+
+  if (query.empty) {
+    return null;
+  }
+
+  const data = query.docs[0].data();
+  const submission = {
+    ...data,
+    task: {
+      ...data.task,
+      submissionDate: data.task.submissionDate.toDate(),
+    },
+    timestamp: data.timestamp.toDate(),
+  } as SubmissionInfo;
+
+  return submission;
 };

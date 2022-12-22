@@ -11,6 +11,7 @@ import ClassroomsList from '../components/ClassroomsList';
 import useStudentView from './useStudentView';
 import JoinClassroomForm from './JoinClassroomForm';
 import TaskOfTheDay from '../components/TaskOfTheDay';
+import GradeComparison from '../components/GradeComparison';
 
 const StudentView = () => {
   const navigation = useNavigation<RootStackScreenProps<'Home'>['navigation']>();
@@ -59,6 +60,9 @@ const StudentView = () => {
     checkSubmissions,
     dailyTask,
     fetchDailyTask,
+    fetchEnrolleeSubmissions,
+    previousSubmission,
+    currentSubmission,
   } = useStudentView();
   const onDialogPressJoin = () => {
     hideDialog();
@@ -67,6 +71,7 @@ const StudentView = () => {
   useEffect(() => {
     fetchDailyTask();
     fetchClassrooms();
+    fetchEnrolleeSubmissions();
   }, []);
 
   useFocusEffect(() => {
@@ -88,6 +93,11 @@ const StudentView = () => {
         style={{ marginTop: 16 }}
         task={dailyTask}
         onPress={handlePressDailyTask}
+      />
+      <GradeComparison
+        previousGrade={previousSubmission?.grade}
+        currentGrade={currentSubmission?.grade}
+        style={{ marginTop: 16 }}
       />
       <View style={{ height: 24 }} />
       <List.Subheader>Classrooms</List.Subheader>

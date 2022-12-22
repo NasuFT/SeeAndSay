@@ -47,7 +47,7 @@ const TaskOfTheDay = ({
               variant="titleLarge"
               style={{ textAlign: 'center', color: theme.colors.onPrimaryContainer }}
               numberOfLines={1}>
-              {task?.title}
+              {task?.game.title}
             </Text>
             <Text
               variant="labelLarge"

@@ -25,3 +25,18 @@ export function getMatchingCharacters(a: string, b: string) {
     .split('')
     .reduce((accumulator, char, index) => accumulator + (char === b.charAt(index) ? 1 : 0), 0);
 }
+
+export const interpolate = (value: number, x: [number, number], y: [number, number]) => {
+  if (value < x[0]) {
+    return y[0];
+  }
+  if (value > x[1]) {
+    return y[1];
+  }
+
+  if (x[1] - x[0] === 0) {
+    return y[0];
+  }
+
+  return y[0] + (value - x[0]) * ((y[1] - y[0]) / (x[1] - x[0]));
+};

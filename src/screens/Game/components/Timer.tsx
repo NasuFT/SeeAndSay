@@ -1,7 +1,6 @@
 import { View, StyleProp, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { intervalToDuration, secondsToMinutes } from 'date-fns';
-import { useEffect } from 'react';
+import { intervalToDuration } from 'date-fns';
 
 interface Props {
   seconds: number;

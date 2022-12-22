@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { RootStackScreenProps } from '@/navigators/types';
 import useGameContainer from './useGameContainer';
@@ -8,10 +8,17 @@ import FourPicsOneWord from './screens/FourPicsOneWord';
 import DescribeMe from './screens/DescribeMe';
 import Puzzle from './screens/Puzzle';
 import ScavengerHunt from './screens/ScavengerHunt';
+import { BackHandler } from 'react-native';
 
 const Game = () => {
-  const { selectedTask, imageSources, setSubmissions, uploadSubmission, setTime } =
-    useGameContainer();
+  const {
+    selectedTask,
+    imageSources,
+    setSubmissions,
+    uploadSubmission,
+    setTime,
+    
+  } = useGameContainer();
   const { game } = selectedTask;
   const { type } = game;
 
@@ -22,6 +29,22 @@ const Game = () => {
     await uploadSubmission();
     navigation.pop();
   };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => null,
+    });
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const handler = () => true;
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', handler);
+
+      return subscription.remove;
+    }, [])
+  );
 
   if (type === 'classic') {
     return <Classic game={game} images={imageSources} onSubmit={handleSubmit} />;

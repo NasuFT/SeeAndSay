@@ -2,6 +2,7 @@ import api from '@/services';
 import { getTaskById } from '@/services/firestore';
 import { Classroom, Enroll, SubmissionInfo } from '@/types';
 import { createModel } from '@rematch/core';
+import { isEqual, startOfToday, startOfYesterday } from 'date-fns';
 import { RootModel } from '.';
 
 interface State {
@@ -11,6 +12,8 @@ interface State {
   enrollee: Enroll | null;
   dailyTaskSubmissions: SubmissionInfo[];
   submissions: SubmissionInfo[];
+  currentSubmission: SubmissionInfo | null;
+  previousSubmission: SubmissionInfo | null;
 }
 
 export const selects = createModel<RootModel>()({
@@ -21,6 +24,8 @@ export const selects = createModel<RootModel>()({
     enrollee: null,
     submissions: [],
     dailyTaskSubmissions: [],
+    previousSubmission: null,
+    currentSubmission: null,
   } as State,
   reducers: {
     setClassrooms(state, payload: Classroom[]) {
@@ -61,6 +66,18 @@ export const selects = createModel<RootModel>()({
         dailyTaskSubmissions: payload,
       };
     },
+    setPreviousSubmission(state, payload: SubmissionInfo | null) {
+      return {
+        ...state,
+        previousSubmission: payload,
+      };
+    },
+    setCurrentSubmission(state, payload: SubmissionInfo | null) {
+      return {
+        ...state,
+        currentSubmission: payload,
+      };
+    },
   },
   effects: (dispatch) => ({
     async fetchClassrooms(_: void, state) {
@@ -76,7 +93,7 @@ export const selects = createModel<RootModel>()({
         const classrooms = isUserTeacher
           ? await api.firestore.getTeacherClassrooms(user.id)
           : await api.firestore.getStudentClassrooms(user.id);
-        dispatch.classrooms.setClassrooms(classrooms);
+        dispatch.selects.setClassrooms(classrooms);
       } catch (error) {
         alert(error);
       }
@@ -93,7 +110,7 @@ export const selects = createModel<RootModel>()({
         }
 
         await api.firestore.createClassroom(user.id, name);
-        await dispatch.classrooms.fetchClassrooms();
+        await dispatch.selects.fetchClassrooms();
       } catch (error) {
         alert(error);
       }
@@ -110,7 +127,7 @@ export const selects = createModel<RootModel>()({
         }
 
         await api.firestore.joinClassroom(user.id, code);
-        await dispatch.classrooms.fetchClassrooms();
+        await dispatch.selects.fetchClassrooms();
       } catch (error) {
         alert(error);
       }
@@ -123,7 +140,7 @@ export const selects = createModel<RootModel>()({
         }
 
         const enrollees = await api.firestore.getClassroomEnrolls(classroom.id);
-        dispatch.classrooms.setEnrollees(enrollees);
+        dispatch.selects.setEnrollees(enrollees);
       } catch (error) {
         alert(error);
       }
@@ -137,7 +154,7 @@ export const selects = createModel<RootModel>()({
 
         const { student } = enrollee;
         const submissions = await api.firestore.getUserSubmissions(student.id);
-        dispatch.classrooms.setSubmissions(submissions);
+        dispatch.selects.setSubmissions(submissions);
       } catch (error) {
         alert(error);
       }
@@ -151,7 +168,33 @@ export const selects = createModel<RootModel>()({
 
         const submissions = await api.firestore.getTaskSubmissions(dailyTask.id);
 
-        dispatch.classrooms.setDailyTaskSubmissions(submissions);
+        dispatch.selects.setDailyTaskSubmissions(submissions);
+      } catch (error) {
+        alert(error);
+      }
+    },
+    async fetchUserSubmissions(_: void, state) {
+      try {
+        const user = state.users.user;
+        if (!user) {
+          throw new Error('No user found!');
+        }
+
+        const submissions = await api.firestore.getUserSubmissions(user.id, 2);
+        const previousSubmission = submissions.find((submission) =>
+          isEqual(submission.task.submissionDate, startOfYesterday())
+        );
+        const currentSubmission = submissions.find((submission) =>
+          isEqual(submission.task.submissionDate, startOfToday())
+        );
+
+        if (previousSubmission) {
+          dispatch.selects.setPreviousSubmission(previousSubmission);
+        }
+
+        if (currentSubmission) {
+          dispatch.selects.setCurrentSubmission(currentSubmission);
+        }
       } catch (error) {
         alert(error);
       }

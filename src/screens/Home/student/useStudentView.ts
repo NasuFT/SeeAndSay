@@ -72,6 +72,11 @@ const useStudentView = () => {
     cb();
   }, [dailyTask, user]);
 
+  const previousSubmission = useSelector((state: RootState) => state.selects.previousSubmission);
+  const currentSubmission = useSelector((state: RootState) => state.selects.currentSubmission);
+
+  const fetchEnrolleeSubmissions = dispatch.selects.fetchUserSubmissions;
+
   return {
     control,
     classrooms,
@@ -82,6 +87,9 @@ const useStudentView = () => {
     fetchDailyTask,
     canSubmit,
     checkSubmissions,
+    previousSubmission,
+    currentSubmission,
+    fetchEnrolleeSubmissions,
   };
 };
 

@@ -18,8 +18,7 @@ import storage from '@react-native-firebase/storage';
 import useTheme from '@/hooks/useTheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
-import { uploadRandomTasks } from './helper';
-import { startOfToday } from 'date-fns';
+import { uploadGames } from './helper';
 
 if (__DEV__) {
   console.log('DEV MODE');
@@ -34,13 +33,13 @@ if (__DEV__) {
 const AppContainer = () => {
   const { paperTheme, navigationTheme } = useTheme();
 
-  // useEffect(() => {
-  //   const cb = async () => {
-  //     uploadRandomTasks(6);
-  //   };
+  useEffect(() => {
+    const cb = async () => {
+      uploadGames();
+    };
 
-  //   cb();
-  // }, []);
+    cb();
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

@@ -1,9 +1,8 @@
 import { StyleProp, ViewStyle } from 'react-native';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTheme } from 'react-native-paper';
 import Animated, {
   interpolate,
-  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,

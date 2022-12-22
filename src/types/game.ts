@@ -4,6 +4,7 @@ export interface GameInfoBase {
   type: GameType;
   seconds: number;
   rounds: number;
+  title: string;
 }
 
 export type GameDataItemClassic = {

@@ -47,7 +47,7 @@ const GamePrepare = () => {
   return (
     <Screen>
       <Text variant="headlineLarge" numberOfLines={1} adjustsFontSizeToFit>
-        {dailyTask.title}
+        {dailyTask.game.title}
       </Text>
       <Text variant="titleLarge" style={{ marginTop: 32 }}>
         {getGameTypeTitle(game.type)}

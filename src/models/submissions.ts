@@ -1,5 +1,4 @@
 import api from '@/services';
-import { SubmissionInfo } from '@/types';
 import { createModel } from '@rematch/core';
 import { RootModel } from '.';
 
@@ -39,9 +38,16 @@ export const submissions = createModel<RootModel>()({
           throw new Error('No user selected!');
         }
 
-        await api.firestore.createTaskSubmission({ taskId: task.id, userId: user.id, data, time });
+        const id = await api.firestore.createTaskSubmission({
+          taskId: task.id,
+          userId: user.id,
+          data,
+          time,
+        });
         dispatch.submissions.setSubmission([]);
         dispatch.submissions.setTime(-1);
+        const submission = await api.firestore.getSubmissionById(id);
+        dispatch.selects.setCurrentSubmission(submission);
       } catch (error) {
         alert(error);
       }
