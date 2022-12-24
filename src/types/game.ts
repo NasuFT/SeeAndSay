@@ -27,9 +27,10 @@ export type GameDataItemPuzzle = {
 export type GameDataItemScavengerHunt = {
   imgSource: string;
   answer: {
-    x: 0;
-    y: 0;
+    x: number;
+    y: number;
   };
+  description: string;
 };
 
 export type GameDataClassic = GameDataItemClassic[];

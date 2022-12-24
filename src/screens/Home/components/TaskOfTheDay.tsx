@@ -10,6 +10,7 @@ interface Props {
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   title?: string;
+  subtitleDisabled?: string;
   task?: Task | null;
 }
 
@@ -18,6 +19,7 @@ const TaskOfTheDay = ({
   style,
   onPress = () => {},
   title = 'TASK OF THE DAY',
+  subtitleDisabled = '',
   task,
 }: Props) => {
   const theme = useTheme();
@@ -47,7 +49,7 @@ const TaskOfTheDay = ({
               variant="titleLarge"
               style={{ textAlign: 'center', color: theme.colors.onPrimaryContainer }}
               numberOfLines={1}>
-              {task?.game.title}
+              {task?.game.title ?? subtitleDisabled}
             </Text>
             <Text
               variant="labelLarge"

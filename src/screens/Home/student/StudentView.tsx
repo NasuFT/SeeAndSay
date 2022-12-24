@@ -92,6 +92,7 @@ const StudentView = () => {
         disabled={!dailyTask || !canSubmit}
         style={{ marginTop: 16 }}
         task={dailyTask}
+        subtitleDisabled="No task for today!"
         onPress={handlePressDailyTask}
       />
       <GradeComparison

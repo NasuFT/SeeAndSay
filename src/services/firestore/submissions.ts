@@ -1,6 +1,7 @@
 import {
   SubmissionDataClassic,
   SubmissionDataDescribeMe,
+  SubmissionDataFourPicsOneWord,
   SubmissionDataPuzzle,
   SubmissionDataScavengerHunt,
   SubmissionInfo,
@@ -32,7 +33,7 @@ const computeGrade = (task: Task, submissionData: any[]) => {
     const totalCharacters = data.reduce((accumulator, item) => accumulator + item.answer.length, 0);
     return (correctCharacters / totalCharacters) * 100;
   } else if (type === 'fourpicsoneword') {
-    const data = submissionData as SubmissionDataClassic;
+    const data = submissionData as SubmissionDataFourPicsOneWord;
     const correctCharacters = data.reduce(
       (accumulator, item, index) =>
         accumulator + getMatchingCharacters(item.answer, gameData[index].word),
@@ -81,7 +82,7 @@ const computeGrade = (task: Task, submissionData: any[]) => {
         0.5
       );
 
-      return interpolate(distance, [5, 100], [100, 0]);
+      return interpolate(distance, [15, 200], [100, 0]);
     });
     const sumGrades = grades.reduce((acc, val) => acc + val, 0);
     return sumGrades / gameData.length;

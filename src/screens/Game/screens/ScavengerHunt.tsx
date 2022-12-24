@@ -1,7 +1,8 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { View } from 'react-native';
 import { millisecondsToSeconds } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
-import { Button } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 
 import { ScrollingScreen } from '@/components';
 import { useTimer } from '@/hooks';
@@ -30,6 +31,7 @@ const ScavengerHunt = ({ game, images, onSubmit }: Props) => {
 
   const [round, setRound] = useState(1);
   const currentImageSource = useMemo(() => images[round - 1], [images, round]);
+  const currentGameItem = useMemo(() => game.data[round - 1], [game]);
 
   const isFinalRound = useMemo(() => round === rounds, [round]);
 
@@ -104,6 +106,9 @@ const ScavengerHunt = ({ game, images, onSubmit }: Props) => {
         style={{ marginTop: 32 }}
         onValueChange={setInput}
       />
+      <View style={{ marginVertical: 40, paddingHorizontal: 16 }}>
+        <Text variant="titleMedium">{currentGameItem.description}</Text>
+      </View>
     </ScrollingScreen>
   );
 };
