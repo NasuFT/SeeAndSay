@@ -172,10 +172,11 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
         onValueChange={(value) => {
           dispatch({ type: 'SET_SUGGESTION', payload: value });
         }}
+        style={{ marginHorizontal: 16 }}
       />
       <Button
         mode="contained"
-        style={{ alignSelf: 'stretch' }}
+        style={{ alignSelf: 'stretch', margin: 16 }}
         onPress={() => {
           dispatch({ type: 'USE_SUGGESTION' });
         }}>

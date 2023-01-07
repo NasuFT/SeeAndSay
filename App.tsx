@@ -20,27 +20,27 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
 import { uploadGames, uploadUsers } from './helper';
 
-if (__DEV__) {
-  console.log('DEV MODE');
-  auth().useEmulator('http://192.168.1.6:9099');
-  firestore().settings({
-    persistence: false,
-  });
-  firestore().useEmulator('192.168.1.6', 8080);
-  storage().useEmulator('192.168.1.6', 9199);
-}
+// if (__DEV__) {
+//   console.log('DEV MODE');
+//   auth().useEmulator('http://192.168.1.6:9099');
+//   firestore().settings({
+//     persistence: false,
+//   });
+//   firestore().useEmulator('192.168.1.6', 8080);
+//   storage().useEmulator('192.168.1.6', 9199);
+// }
 
 const AppContainer = () => {
   const { paperTheme, navigationTheme } = useTheme();
 
-  useEffect(() => {
-    const cb = async () => {
-      uploadGames();
-      // uploadUsers();
-    };
+  // useEffect(() => {
+  //   const cb = async () => {
+  //     // uploadGames();
+  //     // uploadUsers();
+  //   };
 
-    cb();
-  }, []);
+  //   cb();
+  // }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

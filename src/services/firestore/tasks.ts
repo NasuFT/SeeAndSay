@@ -6,22 +6,22 @@ import { getRandomValues } from '@/utils/random';
 import { omit, random } from 'lodash';
 
 const createRandomTask = async () => {
-  // const dayToday = getDay(new Date());
+  const dayToday = getDay(new Date());
 
-  // if (dayToday === 0 || dayToday === 6) {
-  //   return null;
-  // }
+  if (dayToday === 0 || dayToday === 6) {
+    return null;
+  }
 
-  // const typeToday: GameType =
-  //   dayToday === 1
-  //     ? 'classic'
-  //     : dayToday === 2
-  //     ? 'describeme'
-  //     : dayToday === 3
-  //     ? 'puzzle'
-  //     : dayToday === 4
-  //     ? 'scavengerhunt'
-  //     : 'fourpicsoneword';
+  const typeToday: GameType =
+    dayToday === 1
+      ? 'classic'
+      : dayToday === 2
+      ? 'describeme'
+      : dayToday === 3
+      ? 'puzzle'
+      : dayToday === 4
+      ? 'scavengerhunt'
+      : 'fourpicsoneword';
 
   const randomGameRef = firestore().collection(GAMES_COLLECTION);
   const taskRef = firestore().collection(TASKS_COLLECTION).doc();
@@ -31,7 +31,7 @@ const createRandomTask = async () => {
 
   let query = await randomGameRef
     .where(`random.${randomIndex}`, '<=', randomValue)
-    .where('type', '==', 'classic')
+    .where('type', '==', typeToday)
     .orderBy(`random.${randomIndex}`, 'desc')
     .limit(1)
     .get();
@@ -39,7 +39,7 @@ const createRandomTask = async () => {
   if (query.empty) {
     query = await randomGameRef
       .where(`random.${randomIndex}`, '>=', randomValue)
-      .where('type', '==', 'classic')
+      .where('type', '==', typeToday)
       .orderBy(`random.${randomIndex}`)
       .limit(1)
       .get();
@@ -79,12 +79,12 @@ const createRandomTask = async () => {
 };
 
 export const getDailyTask = async () => {
-  // const dayToday = getDay(new Date());
+  const dayToday = getDay(new Date());
 
-  // // saturday or sunday = no task
-  // if (dayToday === 0 || dayToday === 6) {
-  //   return null;
-  // }
+  // saturday or sunday = no task
+  if (dayToday === 0 || dayToday === 6) {
+    return null;
+  }
 
   const dateToday = startOfToday();
   const query = await firestore()
