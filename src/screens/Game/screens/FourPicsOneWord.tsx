@@ -155,7 +155,7 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
       />
       <Timer seconds={millisecondsToSeconds(time)} style={{ marginTop: 32, alignSelf: 'center' }} />
       <Text
-        variant="bodyLarge"
+        variant="titleMedium"
         style={{ marginTop: 16, marginHorizontal: 16, textAlign: 'center' }}>{`Language: ${
         currentGameItem.language === 'ph' ? 'Filipino' : 'English'
       }`}</Text>
