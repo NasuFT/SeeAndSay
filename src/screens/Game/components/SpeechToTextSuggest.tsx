@@ -39,7 +39,6 @@ const SpeechToTextSuggest = ({ onValueChange, style }: Props) => {
 
     Voice.onSpeechResults = (e) => {
       const result = e.value;
-      console.log(result);
       if (result && result.length > 0) {
         setSuggestion(result.find((word) => word.split(' ').length === 1) ?? '');
       }

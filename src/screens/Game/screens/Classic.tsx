@@ -93,10 +93,6 @@ const Classic = ({ game, images, onSubmit }: Props) => {
     suggestion: '',
   });
 
-  useEffect(() => {
-    console.log(gameState);
-  }, [gameState]);
-
   useLayoutEffect(() => {
     startTimer();
 

@@ -35,7 +35,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     const cb = async () => {
-      // uploadGames();
+      uploadGames();
       // uploadUsers();
     };
 

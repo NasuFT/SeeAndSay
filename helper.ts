@@ -14,13 +14,14 @@ const gamesClassic: GameInfo[] = [
     data: [
       {
         imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fglobe.png?alt=media&token=07f6bf8e-efd4-435b-b4b2-6a292371ed13',
-        word: 'globe',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fruler.png?alt=media&token=09317463-c77f-4e69-819a-a1cebb3ed2c7',
+        word: 'ruler',
       },
       {
         imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fruler.png?alt=media&token=09317463-c77f-4e69-819a-a1cebb3ed2c7',
-        word: 'ruler',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fpencil.png?alt=media&token=5f410261-61e6-4dbe-a96a-7da3dd0c8c2d',
+        language: 'ph',
+        word: 'lapis',
       },
       {
         imgSource:
@@ -52,23 +53,25 @@ const gamesClassic: GameInfo[] = [
       },
       {
         imgSource:
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fglobe.png?alt=media&token=07f6bf8e-efd4-435b-b4b2-6a292371ed13',
+        word: 'globo',
+        language: 'ph',
+      },
+      {
+        imgSource:
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fpen.png?alt=media&token=23c13402-d16e-4c6b-bd5c-a0c37bbcf870',
         word: 'pen',
       },
       {
         imgSource:
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fnotebook_2.png?alt=media&token=802365d4-8f19-48b9-b159-472222a4f80b',
-        word: 'notebook',
+        language: 'ph',
+        word: 'papel',
       },
       {
         imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fpencil.png?alt=media&token=5f410261-61e6-4dbe-a96a-7da3dd0c8c2d',
-        word: 'pencil',
-      },
-      {
-        imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fscissors.png?alt=media&token=6c2b93d3-c2eb-4b88-b41a-160f789d9a23',
-        word: 'scissors',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fboard.png?alt=media&token=a79278fb-df1b-4b4e-8563-7c8fc9199a2b',
+        word: 'board',
       },
     ],
   },
@@ -85,23 +88,25 @@ const gamesClassic: GameInfo[] = [
       },
       {
         imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fnotebook_2.png?alt=media&token=802365d4-8f19-48b9-b159-472222a4f80b',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fpencil.png?alt=media&token=5f410261-61e6-4dbe-a96a-7da3dd0c8c2d',
+        language: 'ph',
+        word: 'lapis',
+      },
+      {
+        imgSource:
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fnotebook.png?alt=media&token=446a6afe-197e-460d-8154-7e440d0bd866',
         word: 'notebook',
+      },
+      {
+        imgSource:
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fscissors.png?alt=media&token=6c2b93d3-c2eb-4b88-b41a-160f789d9a23',
+        language: 'ph',
+        word: 'gunting',
       },
       {
         imgSource:
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fpencilcase.jpg?alt=media&token=9ac681de-c52d-4c07-8c0d-e4c5a676260b',
         word: 'pencilcase',
-      },
-      {
-        imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fboard.png?alt=media&token=a79278fb-df1b-4b4e-8563-7c8fc9199a2b',
-        word: 'board',
-      },
-      {
-        imgSource:
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fclassic%2Fbus.png?alt=media&token=3ac08073-9c5a-48ed-90d8-b0b02e406669',
-        word: 'bus',
       },
     ],
   },
@@ -158,21 +163,22 @@ const gamesFourPicsOneWord: GameInfo[] = [
     data: [
       {
         imgSources: [
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball.jpg?alt=media&token=82f448a4-b14a-4a85-a4bd-0f0c7bd913a0',
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball_2.jpg?alt=media&token=63f59e7c-42f8-4b78-871d-a098fc2fce18',
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball_3.jpeg?alt=media&token=5f3f6078-39ec-464f-b533-cf38b3d9186a',
-          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball_4.jpg?alt=media&token=705c6c7d-3185-416a-b2d6-b8e1cccfe14d',
-        ],
-        word: 'ball',
-      },
-      {
-        imgSources: [
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fcar.jpg?alt=media&token=0e1bbc65-e2bb-4441-a240-763d65548375',
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fcar_2.png?alt=media&token=3b4371cf-d5f0-4068-a69e-d4626e7e1105',
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fcar_3.jpg?alt=media&token=c4a54c6a-aeb7-4cdd-9ff8-4a77b1948b7f',
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fcar_4.png?alt=media&token=21fd0805-5ff8-42d2-91de-40ed8e94ab0d',
         ],
         word: 'car',
+      },
+      {
+        imgSources: [
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball.jpg?alt=media&token=82f448a4-b14a-4a85-a4bd-0f0c7bd913a0',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball_2.jpg?alt=media&token=63f59e7c-42f8-4b78-871d-a098fc2fce18',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball_3.jpeg?alt=media&token=5f3f6078-39ec-464f-b533-cf38b3d9186a',
+          'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fball_4.jpg?alt=media&token=705c6c7d-3185-416a-b2d6-b8e1cccfe14d',
+        ],
+        language: 'ph',
+        word: 'bola',
       },
       {
         imgSources: [
@@ -198,7 +204,8 @@ const gamesFourPicsOneWord: GameInfo[] = [
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fcat_3.jpg?alt=media&token=14d7e70b-3c05-49da-a472-3414d7624b02',
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fcat_4.webp?alt=media&token=bfa6d489-29f6-4c60-8479-66a1bfb7891f',
         ],
-        word: 'cat',
+        language: 'ph',
+        word: 'pusa',
       },
       {
         imgSources: [
@@ -216,7 +223,8 @@ const gamesFourPicsOneWord: GameInfo[] = [
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fteacher_3.jpg?alt=media&token=0441e411-b002-4219-b5d8-4d0456da6960',
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fteacher_4.png?alt=media&token=1fdf552f-d29a-4144-95a6-561bf1306a65',
         ],
-        word: 'teacher',
+        language: 'ph',
+        word: 'guro',
       },
     ],
   },
@@ -242,7 +250,8 @@ const gamesFourPicsOneWord: GameInfo[] = [
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fdog_3.jpg?alt=media&token=29df348f-7890-48e7-8dae-175a01016c5f',
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Ffourpicsoneword%2Fdog_4.png?alt=media&token=8a4bd02d-d2f2-4803-bd36-0369b89cf037',
         ],
-        word: 'dog',
+        language: 'ph',
+        word: 'aso',
       },
       {
         imgSources: [
@@ -279,8 +288,8 @@ const gamesDescribeMe: GameInfo[] = [
       {
         imgSource:
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fdescribeme%2Fboy.jpg?alt=media&token=f021a487-404b-452f-9838-6703b0eb12f3',
-        choices: ['Male', 'Female', 'Muscular', 'Feminine'],
-        answers: ['Male'],
+        choices: ['Lalaki', 'Babae', 'Male', 'Female'],
+        answers: ['Lalaki', 'Male'],
       },
     ],
   },
@@ -299,8 +308,8 @@ const gamesDescribeMe: GameInfo[] = [
       {
         imgSource:
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fdescribeme%2Fgirl.jpg?alt=media&token=20c726e5-88ba-4556-a6ea-955a551e1ae2',
-        choices: ['Male', 'Muscular', 'Female', 'Feminine'],
-        answers: ['Female', 'Feminine'],
+        choices: ['Lalaki', 'Babae', 'Blue', 'Pink'],
+        answers: ['Babae', 'Pink'],
       },
       {
         imgSource:
@@ -331,8 +340,8 @@ const gamesDescribeMe: GameInfo[] = [
       {
         imgSource:
           'https://firebasestorage.googleapis.com/v0/b/see-and-say-77500.appspot.com/o/games%2Fdescribeme%2Ffire.png?alt=media&token=9349f242-d96e-4d39-a363-068dfdef015b',
-        choices: ['Dark', 'Hot', 'Cold', 'Bright'],
-        answers: ['Hot', 'Bright'],
+        choices: ['Madilim', 'Mainit', 'Malamig', 'Maliwanag'],
+        answers: ['Mainit', 'Maliwanag'],
       },
     ],
   },
@@ -369,7 +378,7 @@ const gamesScavengerHunt: GameInfo[] = [
           x: -76.4,
           y: -64.5714,
         },
-        description: 'Find the doctor!',
+        description: 'Hanapin ang doktor!',
       },
     ],
   },
@@ -386,7 +395,7 @@ const gamesScavengerHunt: GameInfo[] = [
           x: -43.75,
           y: 74.5192,
         },
-        description: 'Find the banana!',
+        description: 'Hanapin ang saging!',
       },
     ],
   },

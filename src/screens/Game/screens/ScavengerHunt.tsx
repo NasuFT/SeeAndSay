@@ -107,7 +107,9 @@ const ScavengerHunt = ({ game, images, onSubmit }: Props) => {
         onValueChange={setInput}
       />
       <View style={{ marginVertical: 40, paddingHorizontal: 16 }}>
-        <Text variant="titleMedium">{currentGameItem.description}</Text>
+        <Text variant="titleMedium" style={{ textAlign: 'center' }}>
+          {currentGameItem.description}
+        </Text>
       </View>
     </ScrollingScreen>
   );
