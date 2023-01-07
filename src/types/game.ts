@@ -9,10 +9,12 @@ export interface GameInfoBase {
 
 export type GameDataItemClassic = {
   imgSource: string;
+  language?: string;
   word: string;
 };
 export type GameDataItemFourPicsOneWord = {
   imgSources: string[];
+  language?: string;
   word: string;
 };
 export type GameDataItemDescribeMe = {

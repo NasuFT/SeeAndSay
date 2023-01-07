@@ -31,6 +31,7 @@ const createRandomTask = async () => {
 
   let query = await randomGameRef
     .where(`random.${randomIndex}`, '<=', randomValue)
+    .where('type', '==', 'classic')
     .orderBy(`random.${randomIndex}`, 'desc')
     .limit(1)
     .get();
@@ -38,6 +39,7 @@ const createRandomTask = async () => {
   if (query.empty) {
     query = await randomGameRef
       .where(`random.${randomIndex}`, '>=', randomValue)
+      .where('type', '==', 'classic')
       .orderBy(`random.${randomIndex}`)
       .limit(1)
       .get();

@@ -39,7 +39,8 @@
           }
         }
       ],
-      "@react-native-firebase/app"
+      "@react-native-firebase/app",
+      "@react-native-voice/voice"
     ],
     "extra": {
       "eas": {
