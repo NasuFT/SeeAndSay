@@ -154,12 +154,10 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
         style={{ alignSelf: 'flex-end', marginRight: 16 }}
       />
       <Timer seconds={millisecondsToSeconds(time)} style={{ marginTop: 32, alignSelf: 'center' }} />
-      <Text
-        variant="titleMedium"
-        style={{ marginTop: 16, marginHorizontal: 16, textAlign: 'center' }}>{`Language: ${
+      <FourImages sources={currentImageSources} style={{ marginTop: 32 }} />
+      <Text variant="titleMedium" style={{ margin: 16, textAlign: 'center' }}>{`Language: ${
         currentGameItem.language === 'ph' ? 'Filipino' : 'English'
       }`}</Text>
-      <FourImages sources={currentImageSources} style={{ marginTop: 16 }} />
       <InputTiled
         length={currentGameItem.word.length}
         value={gameState.input}

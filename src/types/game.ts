@@ -9,11 +9,13 @@ export interface GameInfoBase {
 
 export type GameDataItemClassic = {
   imgSource: string;
+  // default: 'en'; put 'ph' if Filipino
   language?: string;
   word: string;
 };
 export type GameDataItemFourPicsOneWord = {
   imgSources: string[];
+  // default: 'en'; put 'ph' if Filipino
   language?: string;
   word: string;
 };
