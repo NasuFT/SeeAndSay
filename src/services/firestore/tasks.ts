@@ -8,6 +8,7 @@ import { omit, random } from 'lodash';
 const createRandomTask = async () => {
   const dayToday = getDay(new Date());
 
+  // no task for saturday or sunday
   if (dayToday === 0 || dayToday === 6) {
     return null;
   }
@@ -79,13 +80,6 @@ const createRandomTask = async () => {
 };
 
 export const getDailyTask = async () => {
-  const dayToday = getDay(new Date());
-
-  // saturday or sunday = no task
-  if (dayToday === 0 || dayToday === 6) {
-    return null;
-  }
-
   const dateToday = startOfToday();
   const query = await firestore()
     .collection(TASKS_COLLECTION)
