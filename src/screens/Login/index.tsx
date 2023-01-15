@@ -6,7 +6,6 @@ import { RootStackScreenProps } from '@/navigators/types';
 
 import useLoginContainer from './useLoginContainer';
 import LoginForm from './LoginForm';
-import SpeechToTextSuggest from '../Game/components/SpeechToTextSuggest';
 
 const Login = () => {
   const { control, handleLoginPress } = useLoginContainer();

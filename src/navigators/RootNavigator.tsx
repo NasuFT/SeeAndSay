@@ -10,6 +10,7 @@ import {
   Game,
   GamePrepare,
   SubmissionInfo,
+  Start,
 } from '@/screens';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -21,9 +22,10 @@ const RootNavigator = () => {
   const isSignOut = useSelector((state: RootState) => state.users.isSignOut);
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Start">
       {!user ? (
         <Stack.Group screenOptions={{ animationTypeForReplace: isSignOut ? 'pop' : 'push' }}>
+          <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
         </Stack.Group>

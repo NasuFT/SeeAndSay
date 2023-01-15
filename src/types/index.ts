@@ -53,3 +53,4 @@ export interface Enroll {
 export * from './task';
 export * from './game';
 export * from './submissions';
+export * from './storage';

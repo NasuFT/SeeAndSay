@@ -6,3 +6,4 @@ export { default as Classroom } from './Classroom';
 export { default as Game } from './Game';
 export { default as GamePrepare } from './GamePrepare';
 export { default as SubmissionInfo } from './SubmissionInfo';
+export { default as Start } from './Start';

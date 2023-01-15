@@ -1,5 +1,7 @@
+import { KEY_STORAGE_LOGGED_IN_USER } from '@/constants';
 import api from '@/services';
 import { LoginFormData, RegisterFormData, User } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createModel } from '@rematch/core';
 import { RootModel } from '.';
 
@@ -36,6 +38,7 @@ export const users = createModel<RootModel>()({
         const { email, password } = data;
         const id = await api.auth.signIn(email, password);
         const user = await api.firestore.getUserData(id);
+        await AsyncStorage.setItem(KEY_STORAGE_LOGGED_IN_USER, JSON.stringify(user));
         dispatch.users.setUser(user);
       } catch (error) {
         alert(error);
@@ -54,6 +57,7 @@ export const users = createModel<RootModel>()({
           type: data.type,
         };
         await api.firestore.addUserData(newUser);
+        await AsyncStorage.setItem(KEY_STORAGE_LOGGED_IN_USER, JSON.stringify(newUser));
         dispatch.users.setUser(newUser);
       } catch (error) {
         alert(error);
@@ -62,6 +66,7 @@ export const users = createModel<RootModel>()({
     async signOut() {
       try {
         await api.auth.signOut();
+        await AsyncStorage.removeItem(KEY_STORAGE_LOGGED_IN_USER);
         dispatch.users.setUser(null);
       } catch (error) {
         alert(error);
