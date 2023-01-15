@@ -5,17 +5,16 @@ import { Dispatch, RootState } from '@/store';
 const useGameContainer = () => {
   const dispatch = useDispatch<Dispatch>();
 
-  const selectedTask = useSelector((state: RootState) => state.tasks.task);
+  const dailyTask = useSelector((state: RootState) => state.tasks.task);
   const imageSources = useSelector((state: RootState) => state.tasks.imageSources);
-  const setSubmissions = dispatch.submissions.setSubmission;
-  const setTime = dispatch.submissions.setTime;
-  const uploadSubmission = dispatch.submissions.uploadSubmission;
+  const setSubmission = dispatch.tasks.setSubmission;
+  const uploadSubmission = dispatch.tasks.uploadSubmission;
 
-  if (!selectedTask) {
+  if (!dailyTask) {
     throw new Error('No task selected!');
   }
 
-  return { selectedTask, imageSources, setSubmissions, setTime, uploadSubmission };
+  return { dailyTask, imageSources, setSubmission, uploadSubmission };
 };
 
 export default useGameContainer;

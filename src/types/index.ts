@@ -31,7 +31,6 @@ export interface Classroom {
   id: string;
   name: string;
   code: string;
-  timestamp: Date;
   teacher: {
     id: string;
     firstName: string;
@@ -40,9 +39,7 @@ export interface Classroom {
 }
 
 export interface Enroll {
-  id: string;
   classroomId: string;
-  timestamp: string;
   student: {
     id: string;
     firstName: string;

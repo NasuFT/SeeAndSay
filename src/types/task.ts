@@ -7,5 +7,4 @@ export type TaskInfo = {
 export interface Task extends TaskInfo {
   id: string;
   submissionDate: Date;
-  timestamp: Date;
 }

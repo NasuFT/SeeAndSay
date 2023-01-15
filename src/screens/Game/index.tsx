@@ -9,23 +9,19 @@ import DescribeMe from './screens/DescribeMe';
 import Puzzle from './screens/Puzzle';
 import ScavengerHunt from './screens/ScavengerHunt';
 import { BackHandler } from 'react-native';
+import { SubmissionData } from '@/types';
 
 const Game = () => {
-  const {
-    selectedTask,
-    imageSources,
-    setSubmissions,
-    uploadSubmission,
-    setTime,
-    
-  } = useGameContainer();
-  const { game } = selectedTask;
+  const { dailyTask, imageSources, setSubmission, uploadSubmission } = useGameContainer();
+  const { game } = dailyTask;
   const { type } = game;
 
   const navigation = useNavigation<RootStackScreenProps<'Game'>['navigation']>();
-  const handleSubmit = async (answers: any[], time: number) => {
-    setSubmissions(answers);
-    setTime(time);
+  const handleSubmit = async (answers: SubmissionData, time: number) => {
+    setSubmission({
+      data: answers,
+      time,
+    });
     await uploadSubmission();
     navigation.pop();
   };

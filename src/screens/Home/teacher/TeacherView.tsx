@@ -3,7 +3,6 @@ import { NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AnimatedFAB, Dialog, List, Menu, Portal, Snackbar } from 'react-native-paper';
 import { Item } from 'react-navigation-header-buttons';
-import * as Clipboard from 'expo-clipboard';
 
 import { Button, MaterialHeaderButtons, Screen } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
@@ -64,16 +63,11 @@ const TeacherView = () => {
   const showSnackBar = () => setSnackBarVisible(true);
   const dismissSnackBar = () => setSnackBarVisible(false);
 
-  const {
-    control,
-    classrooms,
-    handleUserCreateClassroom,
-    isCreatingClassroom,
-    fetchClassrooms,
-    selectClassroom,
-  } = useTeacherView();
+  const { control, classrooms, handleUserCreateClassroom, isCreatingClassroom, getClassrooms } =
+    useTeacherView();
   const onDialogPressCreate = () => {
     hideDialog();
+    getClassrooms();
   };
 
   const onMenuCopyCodePress = () => {
@@ -88,7 +82,7 @@ const TeacherView = () => {
   };
 
   useEffect(() => {
-    fetchClassrooms();
+    getClassrooms();
   }, []);
 
   return (
@@ -98,8 +92,7 @@ const TeacherView = () => {
       <ClassroomsList
         data={classrooms}
         onItemPress={(_, data) => {
-          selectClassroom(data);
-          navigation.navigate('Classroom');
+          navigation.navigate('Classroom', { id: data.id });
         }}
         onItemLongPress={(event, data) => {
           const { pageX, pageY } = event.nativeEvent;

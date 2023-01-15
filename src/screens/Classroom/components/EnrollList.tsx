@@ -2,7 +2,7 @@ import { GestureResponderEvent } from 'react-native';
 import { List } from 'react-native-paper';
 import { FlashList } from '@shopify/flash-list';
 
-import { Enroll } from '@/types';
+import { Enroll, User } from '@/types';
 
 interface Props<T> {
   data: T[];
@@ -10,14 +10,14 @@ interface Props<T> {
   onItemLongPress?: (event: GestureResponderEvent, data: T) => void;
 }
 
-const EnrollList = ({ data, onItemLongPress, onItemPress }: Props<Enroll>) => {
+const EnrollList = ({ data, onItemLongPress, onItemPress }: Props<User>) => {
   return (
     <FlashList
       data={data}
       estimatedItemSize={12}
       renderItem={({ item }) => (
         <List.Item
-          title={`${item.student.lastName}, ${item.student.firstName}`}
+          title={`${item.lastName}, ${item.firstName}`}
           // @ts-ignore
           onPress={(e) => onItemPress?.(e, item)}
           onLongPress={(e) => onItemLongPress?.(e, item)}

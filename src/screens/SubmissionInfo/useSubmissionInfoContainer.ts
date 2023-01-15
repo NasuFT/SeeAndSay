@@ -1,13 +1,15 @@
-import { Dispatch, RootState } from '@/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { getUserSubmissions } from '@/api';
+import { SubmissionInfo } from '@/types';
+import { useState } from 'react';
 
 const useSubmissionInfoContainer = () => {
-  const dispatch = useDispatch<Dispatch>();
+  const [submissions, setSubmissions] = useState<SubmissionInfo[]>([]);
+  const getSubmissions = async (userId: string) => {
+    const submissions = await getUserSubmissions(userId);
+    setSubmissions(submissions);
+  };
 
-  const fetchSubmissions = dispatch.selects.fetchEnrolleeSubmissions;
-  const submissions = useSelector((state: RootState) => state.selects.submissions);
-
-  return { submissions, fetchSubmissions };
+  return { submissions, getSubmissions };
 };
 
 export default useSubmissionInfoContainer;

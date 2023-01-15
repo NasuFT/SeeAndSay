@@ -1,4 +1,6 @@
+import firestore from '@react-native-firebase/firestore';
 import {
+  SubmissionData,
   SubmissionDataClassic,
   SubmissionDataDescribeMe,
   SubmissionDataFourPicsOneWord,
@@ -8,16 +10,9 @@ import {
   Task,
 } from '@/types';
 import { getMatchingCharacters, interpolate } from '@/utils/helper';
-import firestore from '@react-native-firebase/firestore';
-import { SUBMISSIONS_COLLECTION } from '../constants';
-import { getTaskById } from './tasks';
-
-interface TaskSubmissionCreateData {
-  taskId: string;
-  userId: string;
-  data: any[];
-  time: number;
-}
+import { SUBMISSIONS_COLLECTION } from './constants';
+import { startOfDay, startOfToday } from 'date-fns';
+import { getTask } from './tasks';
 
 const computeGrade = (task: Task, submissionData: any[]) => {
   const { game } = task;
@@ -89,68 +84,34 @@ const computeGrade = (task: Task, submissionData: any[]) => {
   }
 };
 
-export const createTaskSubmission = async ({
-  taskId,
-  userId,
-  data,
-  time,
-}: TaskSubmissionCreateData) => {
-  const task = await getTaskById(taskId);
-  const document = firestore().collection(SUBMISSIONS_COLLECTION).doc();
+export const getUserTaskSubmission = async (userId: string, taskId: string) => {
+  const collection = firestore().collection(SUBMISSIONS_COLLECTION);
+  const query = collection.where('user.id', '==', userId).where('task.id', '==', taskId);
+  const snapshot = await query.get();
 
-  const newSubmission: SubmissionInfo = {
-    id: document.id,
-    // @ts-ignore: Technically a date
-    timestamp: firestore.FieldValue.serverTimestamp(),
-    task: {
-      id: taskId,
-      title: task.game.title,
-      submissionDate: task.submissionDate,
-    },
-    type: task.game.type,
-    user: {
-      id: userId,
-    },
-    grade: computeGrade(task, data),
-    data,
-    time,
-  };
-
-  await document.set(newSubmission);
-  return document.id;
-};
-
-export const getUserSubmission = async (userId: string, taskId: string) => {
-  const query = await firestore()
-    .collection(SUBMISSIONS_COLLECTION)
-    .where('user.id', '==', userId)
-    .where('task.id', '==', taskId)
-    .get();
-  const documents = query.docs;
-
-  if (documents.length == 0) {
-    return undefined;
-  }
-
-  const data = documents[0].data();
-
+  const data = snapshot.docs[0].data();
   const submission = {
     ...data,
     timestamp: data.timestamp.toDate(),
+    task: {
+      ...data.task,
+      submissionDate: data.task.submissionDate.toDate(),
+    },
   } as SubmissionInfo;
   return submission;
 };
 
-export const getUserSubmissions = async (userId: string, limit = 5) => {
-  const query = await firestore()
-    .collection(SUBMISSIONS_COLLECTION)
-    .where('user.id', '==', userId)
-    .orderBy('timestamp', 'asc')
-    .limitToLast(limit)
-    .get();
-  const documents = query.docs;
+export const getUserSubmissions = async (userId: string, limit?: number) => {
+  const collection = firestore().collection(SUBMISSIONS_COLLECTION);
+  let query = collection.where('user.id', '==', userId).orderBy('timestamp', 'desc');
 
-  const submissions = documents.map((document) => {
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const snapshot = await query.get();
+
+  const submissions = snapshot.docs.map((document) => {
     const data = document.data();
     const submission = {
       ...data,
@@ -166,70 +127,63 @@ export const getUserSubmissions = async (userId: string, limit = 5) => {
   return submissions;
 };
 
-export const getNonDailyTaskUserSubmission = async (userId: string, dailyTaskId: string) => {
-  const query = await firestore()
-    .collection(SUBMISSIONS_COLLECTION)
-    .where('user.id', '==', userId)
-    .where('task.id', '!=', dailyTaskId)
-    .orderBy('timestamp')
-    .limitToLast(1)
-    .get();
-
-  if (query.empty) {
-    return null;
-  }
-
-  const data = query.docs[0].data();
-  const submission = {
-    ...data,
-    timestamp: data.timestamp.toDate(),
-    submissionDate: data.submissionDate.toDate(),
-  } as Task;
-
-  return submission;
-};
-
 export const getTaskSubmissions = async (taskId: string) => {
-  const query = await firestore()
-    .collection(SUBMISSIONS_COLLECTION)
-    .where('task.id', '==', taskId)
-    .get();
+  const collection = firestore().collection(SUBMISSIONS_COLLECTION);
+  let query = collection.where('task.id', '==', taskId);
 
-  const data = query.docs.map((doc) => doc.data() as SubmissionInfo);
+  const snapshot = await query.get();
 
-  return data;
+  const submissions = snapshot.docs.map((document) => {
+    const data = document.data();
+    const submission = {
+      ...data,
+      timestamp: data.timestamp.toDate(),
+      task: {
+        ...data.task,
+        submissionDate: data.task.submissionDate.toDate(),
+      },
+    } as SubmissionInfo;
+    return submission;
+  });
+
+  return submissions;
 };
 
-export const countUserTaskSubmissions = async (userId: string, taskId: string) => {
-  return (
-    await firestore()
-      .collection(SUBMISSIONS_COLLECTION)
-      .where('task.id', '==', taskId)
-      .where('user.id', '==', userId)
-      .count()
-      .get()
-  ).data();
-};
+interface SubmissionDetails {
+  data: SubmissionData;
+  time: number;
+}
 
-export const getSubmissionById = async (submissionId: string) => {
-  const query = await firestore()
-    .collection(SUBMISSIONS_COLLECTION)
-    .where('id', '==', submissionId)
-    .get();
+export const uploadTaskSubmission = async (
+  userId: string,
+  taskId: string,
+  SubmissionDetails: SubmissionDetails
+) => {
+  const collection = firestore().collection(SUBMISSIONS_COLLECTION);
+  const document = collection.doc();
 
-  if (query.empty) {
-    return null;
+  const task = await getTask(taskId);
+
+  if (!task) {
+    throw new Error(`No task found with ID ${taskId}`);
   }
 
-  const data = query.docs[0].data();
   const submission = {
-    ...data,
+    id: document.id,
+    timestamp: firestore.FieldValue.serverTimestamp(),
     task: {
-      ...data.task,
-      submissionDate: data.task.submissionDate.toDate(),
+      id: taskId,
+      title: task.game.title,
+      submissionDate: task.submissionDate,
     },
-    timestamp: data.timestamp.toDate(),
-  } as SubmissionInfo;
+    type: task.game.type,
+    user: {
+      id: userId,
+    },
+    grade: computeGrade(task, SubmissionDetails.data),
+    data: SubmissionDetails.data,
+    time: SubmissionDetails.time,
+  };
 
-  return submission;
+  await document.set(submission);
 };

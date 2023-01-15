@@ -4,9 +4,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Dispatch, RootState } from '@/store';
-import { JoinClassroomFormData } from '@/types';
-import { useCallback, useState } from 'react';
-import api from '@/services';
+import { Classroom, JoinClassroomFormData, SubmissionInfo, Task } from '@/types';
+import { useCallback, useEffect, useState } from 'react';
+import { getStudentClassrooms, getUserSubmissions, joinClassroomByCode } from '@/api';
+import { isEqual, startOfToday, startOfYesterday } from 'date-fns';
 
 const classroomFormSchema: yup.ObjectSchema<JoinClassroomFormData> = yup
   .object({
@@ -15,6 +16,70 @@ const classroomFormSchema: yup.ObjectSchema<JoinClassroomFormData> = yup
   .required();
 
 const useStudentView = () => {
+  const dispatch = useDispatch<Dispatch>();
+
+  // user data
+  const user = useSelector((state: RootState) => state.users.user);
+
+  // daily task
+  const dailyTask = useSelector((state: RootState) => state.tasks.task);
+  const getDailyTask = dispatch.tasks.getDailyTask;
+
+  // submissions
+  const [previousSubmission, setPreviousSubmission] = useState<SubmissionInfo | null>(null);
+  const [currentSubmission, setCurrentSubmission] = useState<SubmissionInfo | null>(null);
+  const getRecentSubmissions = useCallback(async () => {
+    if (!user) {
+      return;
+    }
+
+    const submissions = await getUserSubmissions(user.id, 2);
+    const previousSubmission = submissions.find((submission) =>
+      isEqual(submission.task.submissionDate, startOfYesterday())
+    );
+    const currentSubmission = submissions.find((submission) =>
+      isEqual(submission.task.submissionDate, startOfToday())
+    );
+
+    if (previousSubmission) {
+      setPreviousSubmission(previousSubmission);
+    }
+
+    if (currentSubmission) {
+      setCurrentSubmission(currentSubmission);
+    }
+  }, [user]);
+
+  // playable
+
+  const [isPlayable, setIsPlayable] = useState(false);
+
+  useEffect(() => {
+    if (!dailyTask) {
+      return;
+    }
+
+    if (!currentSubmission || currentSubmission.task.id !== dailyTask.id) {
+      setIsPlayable(true);
+      return;
+    }
+
+    setIsPlayable(false);
+  }, [currentSubmission, dailyTask]);
+
+  // classroom list logic
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  const getClassrooms = useCallback(async () => {
+    if (!user) {
+      return [];
+    }
+
+    const classrooms = await getStudentClassrooms(user.id);
+    setClassrooms(classrooms);
+  }, [user]);
+
+  // join classroom logic
+
   const {
     control,
     handleSubmit,
@@ -22,74 +87,39 @@ const useStudentView = () => {
   } = useForm<JoinClassroomFormData>({
     resolver: yupResolver(classroomFormSchema),
   });
-  const dispatch = useDispatch<Dispatch>();
 
-  const user = useSelector((state: RootState) => state.users.user);
-
-  const classrooms = useSelector((state: RootState) => state.selects.classrooms);
-  const fetchClassrooms = dispatch.selects.fetchClassrooms;
-
-  // const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
-  //   await dispatch.selects.joinClassroom(data.code);
-  // };
-  // const handleUserJoinClassroom = handleSubmit(onSubmitForm);
-
-  const handleUserJoinClassroom = (
-    onSubmit?: (data: JoinClassroomFormData) => void | Promise<void>
-  ) => {
-    const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
-      await dispatch.selects.joinClassroom(data.code);
-      if (onSubmit) {
-        await onSubmit?.(data);
+  const handleUserJoinClassroom = useCallback(
+    (onSubmit?: (data: JoinClassroomFormData) => void | Promise<void>) => {
+      if (!user) {
+        return () => {};
       }
-    };
 
-    return handleSubmit(onSubmitForm);
-  };
+      const onSubmitForm: SubmitHandler<JoinClassroomFormData> = async (data) => {
+        await joinClassroomByCode(user.id, data.code);
+        if (onSubmit) {
+          await onSubmit?.(data);
+        }
+      };
 
-  const isCreatingClassroom = isSubmitting;
+      return handleSubmit(onSubmitForm);
+    },
+    [user]
+  );
 
-  const dailyTask = useSelector((state: RootState) => state.tasks.task);
-  const fetchDailyTask = dispatch.tasks.fetchDailyTask;
-
-  const [canSubmit, setCanSubmit] = useState(false);
-
-  const checkSubmissions = useCallback(() => {
-    if (!dailyTask || !user) {
-      return;
-    }
-
-    const cb = async () => {
-      const { count } = await api.firestore.countUserTaskSubmissions(user.id, dailyTask.id);
-
-      if (count > 0) {
-        setCanSubmit(false);
-      } else {
-        setCanSubmit(true);
-      }
-    };
-
-    cb();
-  }, [dailyTask, user]);
-
-  const previousSubmission = useSelector((state: RootState) => state.selects.previousSubmission);
-  const currentSubmission = useSelector((state: RootState) => state.selects.currentSubmission);
-
-  const fetchEnrolleeSubmissions = dispatch.selects.fetchUserSubmissions;
+  const isJoiningClassroom = isSubmitting;
 
   return {
     control,
     classrooms,
-    fetchClassrooms,
+    getClassrooms,
     handleUserJoinClassroom,
-    isCreatingClassroom,
+    isJoiningClassroom,
     dailyTask,
-    fetchDailyTask,
-    canSubmit,
-    checkSubmissions,
+    getDailyTask,
+    isPlayable,
+    getRecentSubmissions,
     previousSubmission,
     currentSubmission,
-    fetchEnrolleeSubmissions,
   };
 };
 
