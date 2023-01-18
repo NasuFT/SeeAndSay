@@ -20,3 +20,6 @@ ui-debug.log
 
 # yarn
 yarn-error.log
+
+assets/games/test/
+assets/THESIS_PIC/
