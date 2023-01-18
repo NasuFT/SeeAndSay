@@ -1,4 +1,6 @@
 import { Screen } from '@/components';
+import { RootStackScreenProps } from '@/navigators/types';
+import { useRoute } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useEffect } from 'react';
 import { Text } from 'react-native-paper';
@@ -6,10 +8,13 @@ import GradeChart from './components/GradeChart';
 import useSubmissionInfoContainer from './useSubmissionInfoContainer';
 
 const SubmissionInfo = () => {
-  const { submissions, fetchSubmissions } = useSubmissionInfoContainer();
+  const {
+    params: { id },
+  } = useRoute<RootStackScreenProps<'SubmissionInfo'>['route']>();
+  const { submissions, getSubmissions } = useSubmissionInfoContainer();
 
   useEffect(() => {
-    fetchSubmissions();
+    getSubmissions(id);
   }, []);
 
   return (

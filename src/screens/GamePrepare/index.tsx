@@ -21,7 +21,7 @@ const getGameTypeTitle = (type: GameType) => {
 };
 
 const GamePrepare = () => {
-  const { dailyTask, fetchImageSources } = useGamePrepareContainer();
+  const { dailyTask, getImageSources } = useGamePrepareContainer();
 
   if (!dailyTask) {
     return null;
@@ -35,7 +35,7 @@ const GamePrepare = () => {
   const handleStartPress = async () => {
     try {
       setIsLoading(true);
-      await fetchImageSources(dailyTask);
+      await getImageSources();
       navigation.replace('Game');
     } catch (error) {
       alert(error);

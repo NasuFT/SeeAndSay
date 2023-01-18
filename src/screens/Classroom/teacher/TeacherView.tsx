@@ -1,27 +1,38 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Screen } from '@/components';
 import useTeacherView from './useTeacherView';
 import EnrollList from '../components/EnrollList';
 import { useEffect } from 'react';
-import { Enroll } from '@/types';
-import { useNavigation } from '@react-navigation/native';
+import { Enroll, User } from '@/types';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackScreenProps } from '@/navigators/types';
 import AverageGradeChart from '../components/AverageGradeChart';
 import { List } from 'react-native-paper';
 
 const TeacherView = () => {
-  const { enrollees, fetchEnrolls, setEnrollee, grades, fetchGrades } = useTeacherView();
+  const navigation = useNavigation<RootStackScreenProps<'Classroom'>['navigation']>();
+  const {
+    params: { id },
+  } = useRoute<RootStackScreenProps<'Classroom'>['route']>();
+  const { students, getStudents, submissions, getSubmissions, dailyTask, getDailyTask } =
+    useTeacherView();
 
   useEffect(() => {
-    fetchEnrolls();
-    fetchGrades();
+    getStudents(id);
+    getDailyTask();
   }, []);
 
-  const navigation = useNavigation<RootStackScreenProps<'Classroom'>['navigation']>();
-  const handlePress = (data: Enroll) => {
-    setEnrollee(data);
-    navigation.navigate('SubmissionInfo');
+  useEffect(() => {
+    if (dailyTask) {
+      getSubmissions(dailyTask.id);
+    }
+  }, [dailyTask]);
+
+  const grades = useMemo(() => submissions.map((item) => item.grade), [submissions]);
+
+  const handlePress = (data: User) => {
+    navigation.navigate('SubmissionInfo', { id: data.id });
   };
 
   return (
@@ -33,7 +44,7 @@ const TeacherView = () => {
       />
       <View style={{ height: 24 }} />
       <List.Subheader>Students</List.Subheader>
-      <EnrollList data={enrollees} onItemPress={(_, data) => handlePress(data)} />
+      <EnrollList data={students} onItemPress={(_, data) => handlePress(data)} />
     </Screen>
   );
 };

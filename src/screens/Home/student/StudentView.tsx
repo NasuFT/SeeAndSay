@@ -54,28 +54,35 @@ const StudentView = () => {
     control,
     classrooms,
     handleUserJoinClassroom,
-    isCreatingClassroom,
-    fetchClassrooms,
-    canSubmit,
-    checkSubmissions,
+    isJoiningClassroom,
+    getClassrooms,
+    isPlayable,
+    getRecentSubmissions,
     dailyTask,
-    fetchDailyTask,
-    fetchEnrolleeSubmissions,
+    getDailyTask,
     previousSubmission,
     currentSubmission,
   } = useStudentView();
   const onDialogPressJoin = () => {
     hideDialog();
+    getClassrooms();
   };
 
   useEffect(() => {
-    fetchDailyTask();
-    fetchClassrooms();
-    fetchEnrolleeSubmissions();
+    getDailyTask();
+    getClassrooms();
   }, []);
 
+  useEffect(() => {
+    if (dailyTask) {
+      getRecentSubmissions();
+    }
+  }, [dailyTask]);
+
   useFocusEffect(() => {
-    checkSubmissions();
+    if (dailyTask) {
+      getRecentSubmissions();
+    }
   });
 
   const handlePressDailyTask = async () => {
@@ -89,7 +96,7 @@ const StudentView = () => {
   return (
     <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
       <TaskOfTheDay
-        disabled={!dailyTask || !canSubmit}
+        disabled={!dailyTask || !isPlayable}
         style={{ marginTop: 16 }}
         task={dailyTask}
         subtitleDisabled="No task for today!"
@@ -119,13 +126,13 @@ const StudentView = () => {
             <JoinClassroomForm control={control} />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog} disabled={isCreatingClassroom}>
+            <Button onPress={hideDialog} disabled={isJoiningClassroom}>
               Cancel
             </Button>
             <Button
               onPress={handleUserJoinClassroom(onDialogPressJoin)}
-              disabled={isCreatingClassroom}
-              loading={isCreatingClassroom}>
+              disabled={isJoiningClassroom}
+              loading={isJoiningClassroom}>
               Join
             </Button>
           </Dialog.Actions>

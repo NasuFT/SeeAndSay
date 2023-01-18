@@ -4,8 +4,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Dispatch, RootState } from '@/store';
-import { CreateClassroomFormData } from '@/types';
-import { useEffect } from 'react';
+import { Classroom, CreateClassroomFormData } from '@/types';
+import { useCallback, useEffect, useState } from 'react';
+import { createClassroom, getTeacherClassrooms } from '@/api';
 
 const classroomFormSchema: yup.ObjectSchema<CreateClassroomFormData> = yup
   .object({
@@ -14,6 +15,42 @@ const classroomFormSchema: yup.ObjectSchema<CreateClassroomFormData> = yup
   .required();
 
 const useTeacherView = () => {
+  const dispatch = useDispatch<Dispatch>();
+
+  // const classrooms = useSelector((state: RootState) => state.selects.classrooms);
+
+  // const fetchClassrooms = dispatch.selects.fetchClassrooms;
+
+  // // const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
+  // //   await dispatch.selects.createClassroom(data.name);
+  // // };
+  // // const handleUserCreateClassroom = handleSubmit(onSubmitForm);
+
+  // const isCreatingClassroom = isSubmitting;
+
+  // const classroom = useSelector((state: RootState) => state.selects.classroom);
+  // const selectClassroom = dispatch.selects.setClassroom;
+
+  // useEffect(() => {
+  //   dispatch.tasks.fetchDailyTask();
+  // }, []);
+
+  // user
+  const user = useSelector((state: RootState) => state.users.user);
+
+  // classroom list logic
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  const getClassrooms = useCallback(async () => {
+    if (!user) {
+      return [];
+    }
+
+    const classrooms = await getTeacherClassrooms(user.id);
+    setClassrooms(classrooms);
+  }, [user]);
+
+  // create classroom logic
+
   const {
     control,
     handleSubmit,
@@ -22,47 +59,32 @@ const useTeacherView = () => {
     resolver: yupResolver(classroomFormSchema),
   });
 
-  const classrooms = useSelector((state: RootState) => state.selects.classrooms);
-
-  const dispatch = useDispatch<Dispatch>();
-
-  const fetchClassrooms = dispatch.selects.fetchClassrooms;
-
-  // const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
-  //   await dispatch.selects.createClassroom(data.name);
-  // };
-  // const handleUserCreateClassroom = handleSubmit(onSubmitForm);
-
-  const handleUserCreateClassroom = (
-    onSubmit?: (data: CreateClassroomFormData) => void | Promise<void>
-  ) => {
-    const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
-      await dispatch.selects.createClassroom(data.name);
-      if (onSubmit) {
-        await onSubmit?.(data);
+  const handleUserCreateClassroom = useCallback(
+    (onSubmit?: (data: CreateClassroomFormData) => void | Promise<void>) => {
+      if (!user) {
+        return () => {};
       }
-    };
 
-    return handleSubmit(onSubmitForm);
-  };
+      const onSubmitForm: SubmitHandler<CreateClassroomFormData> = async (data) => {
+        await createClassroom(user.id, data.name);
+        if (onSubmit) {
+          await onSubmit?.(data);
+        }
+      };
+
+      return handleSubmit(onSubmitForm);
+    },
+    [user]
+  );
 
   const isCreatingClassroom = isSubmitting;
-
-  const classroom = useSelector((state: RootState) => state.selects.classroom);
-  const selectClassroom = dispatch.selects.setClassroom;
-
-  useEffect(() => {
-    dispatch.tasks.fetchDailyTask();
-  }, []);
 
   return {
     control,
     classrooms,
-    fetchClassrooms,
+    getClassrooms,
     handleUserCreateClassroom,
     isCreatingClassroom,
-    classroom,
-    selectClassroom,
   };
 };
 

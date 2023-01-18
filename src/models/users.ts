@@ -1,5 +1,5 @@
+import { signIn, signOut, signUp } from '@/api';
 import { KEY_STORAGE_LOGGED_IN_USER } from '@/constants';
-import api from '@/services';
 import { LoginFormData, RegisterFormData, User } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createModel } from '@rematch/core';
@@ -34,45 +34,43 @@ export const users = createModel<RootModel>()({
   },
   effects: (dispatch) => ({
     async signIn(data: LoginFormData) {
+      const { email, password } = data;
       try {
-        const { email, password } = data;
-        const id = await api.auth.signIn(email, password);
-        const user = await api.firestore.getUserData(id);
+        const user = await signIn(email, password);
         await AsyncStorage.setItem(KEY_STORAGE_LOGGED_IN_USER, JSON.stringify(user));
         dispatch.users.setUser(user);
       } catch (error) {
+        if (__DEV__) {
+          console.log(error);
+        }
         alert(error);
       }
     },
     async signUp(data: RegisterFormData) {
       try {
-        const { email, password } = data;
-        const id = await api.auth.signUp(email, password);
-
-        const newUser: User = {
-          id,
-          email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          type: data.type,
-        };
-        await api.firestore.addUserData(newUser);
-        await AsyncStorage.setItem(KEY_STORAGE_LOGGED_IN_USER, JSON.stringify(newUser));
-        dispatch.users.setUser(newUser);
+        const user = await signUp(data);
+        await AsyncStorage.setItem(KEY_STORAGE_LOGGED_IN_USER, JSON.stringify(user));
+        dispatch.users.setUser(user);
       } catch (error) {
+        if (__DEV__) {
+          console.log(error);
+        }
         alert(error);
       }
     },
     async signOut() {
       try {
-        await api.auth.signOut();
+        await signOut();
         await AsyncStorage.removeItem(KEY_STORAGE_LOGGED_IN_USER);
         dispatch.users.setUser(null);
       } catch (error) {
+        if (__DEV__) {
+          console.log(error);
+        }
         alert(error);
       }
     },
-    toggleDarkTheme(_: any, state) {
+    toggleTheme(_: void, state) {
       const theme = state.users.theme;
 
       dispatch.users.setTheme(theme === 'light' ? 'dark' : 'light');

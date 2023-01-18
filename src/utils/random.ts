@@ -7,3 +7,7 @@ export const getRandomValues = (n: number) => {
 
   return arr;
 };
+
+export const getRandomValue = () => {
+  return getRandomValues(1)[0];
+};

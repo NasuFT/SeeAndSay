@@ -6,10 +6,10 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Profile: undefined;
-  Classroom: undefined;
+  Classroom: { id: string };
   Game: undefined;
   GamePrepare: undefined;
-  SubmissionInfo: undefined;
+  SubmissionInfo: { id: string };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

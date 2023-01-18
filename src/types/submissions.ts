@@ -2,7 +2,6 @@ import { GameType } from './game';
 
 export interface SubmissionInfoBase {
   id: string;
-  timestamp: Date;
   task: {
     id: string;
     title: string;
@@ -13,6 +12,7 @@ export interface SubmissionInfoBase {
   };
   grade: number;
   type: GameType;
+  timestamp: Date;
 }
 
 export type SubmissionDataClassic = {
@@ -37,6 +37,13 @@ export type SubmissionDataScavengerHunt = {
     y: number;
   };
 }[];
+
+export type SubmissionData =
+  | SubmissionDataClassic
+  | SubmissionDataDescribeMe
+  | SubmissionDataFourPicsOneWord
+  | SubmissionDataPuzzle
+  | SubmissionDataScavengerHunt;
 
 export type SubmissionInfo = SubmissionInfoBase &
   (

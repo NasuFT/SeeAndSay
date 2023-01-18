@@ -6,9 +6,9 @@ const useGamePrepareContainer = () => {
   const dispatch = useDispatch<Dispatch>();
 
   const dailyTask = useSelector((state: RootState) => state.tasks.task);
-  const fetchImageSources = dispatch.tasks.fetchImageSources;
+  const getImageSources = dispatch.tasks.getImageSources;
 
-  return { dailyTask, fetchImageSources };
+  return { dailyTask, getImageSources };
 };
 
 export default useGamePrepareContainer;

@@ -1,26 +1,32 @@
-import { useMemo } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Dispatch, RootState } from '@/store';
+import { SubmissionInfo, User } from '@/types';
+import { getEnrolledStudents, getTaskSubmissions } from '@/api';
 
 const useTeacherView = () => {
   const dispatch = useDispatch<Dispatch>();
 
-  const enrollees = useSelector((state: RootState) => state.selects.enrollees);
-  const fetchEnrolls = dispatch.selects.fetchEnrollees;
-  const setEnrollee = dispatch.selects.setEnrollee;
+  // daily task
+  const dailyTask = useSelector((state: RootState) => state.tasks.task);
+  const getDailyTask = dispatch.tasks.getDailyTask;
 
-  const dailyTaskSubmissions = useSelector(
-    (state: RootState) => state.selects.dailyTaskSubmissions
-  );
-  const fetchGrades = dispatch.selects.fetchDailyTaskSubmissions;
+  // enrolled students logic
+  const [students, setStudents] = useState<User[]>([]);
+  const getStudents = async (classroomId: string) => {
+    const students = await getEnrolledStudents(classroomId);
+    setStudents(students);
+  };
 
-  const grades = useMemo(
-    () => dailyTaskSubmissions.map((submission) => submission.grade),
-    [dailyTaskSubmissions]
-  );
+  // submissions logic
+  const [submissions, setSubmissions] = useState<SubmissionInfo[]>([]);
+  const getSubmissions = async (taskId: string) => {
+    const submissions = await getTaskSubmissions(taskId);
+    setSubmissions(submissions);
+  };
 
-  return { enrollees, fetchEnrolls, setEnrollee, fetchGrades, grades };
+  return { students, getStudents, getSubmissions, submissions, dailyTask, getDailyTask };
 };
 
 export default useTeacherView;
