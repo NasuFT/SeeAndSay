@@ -8,7 +8,7 @@ const StatusBar = () => {
 
   const config = useMemo<StatusBarProps>(
     () => ({
-      style: Color(theme.colors.text).isDark() ? 'dark' : 'light',
+      style: 'light',
     }),
     [theme]
   );

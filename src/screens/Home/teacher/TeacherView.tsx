@@ -145,7 +145,7 @@ const TeacherView = () => {
     //     </Dialog>
     //   </Portal>
     // </Screen>
-    <Screen withBackground source={require('@/../assets/ui/backgroundcolored.png')}>
+    <Screen withBackground>
       <IconButton
         icon="account-circle-outline"
         size={24}

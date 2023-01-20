@@ -18,7 +18,7 @@ const Screen = ({ style, withBackground = false, ...rest }: Props) => {
 
   return withBackground ? (
     <ImageBackground
-      source={require('@/../assets/ui/background.png')}
+      source={require('@/../assets/ui/backgroundcolored.png')}
       resizeMode="stretch"
       style={[
         { alignSelf: 'stretch', flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom },

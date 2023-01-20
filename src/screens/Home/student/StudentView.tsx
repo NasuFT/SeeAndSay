@@ -1,16 +1,9 @@
-import { useLayoutEffect, useEffect, useState } from 'react';
-import {
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  View,
-  ImageBackground,
-  Image,
-} from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, ImageBackground } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { AnimatedFAB, Dialog, FAB, IconButton, List, Portal, Text } from 'react-native-paper';
-import { Item } from 'react-navigation-header-buttons';
+import { Dialog, FAB, IconButton, List, Portal } from 'react-native-paper';
 
-import { Button, MaterialHeaderButtons, Screen } from '@/components';
+import { Button, Screen } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
 
 import ClassroomsList from '../components/ClassroomsList';
@@ -21,35 +14,6 @@ import GradeComparison from '../components/GradeComparison';
 
 const StudentView = () => {
   const navigation = useNavigation<RootStackScreenProps<'Home'>['navigation']>();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <MaterialHeaderButtons>
-          <Item
-            title="Profile"
-            iconName="account-circle-outline"
-            onPress={() => navigation.navigate('Profile')}
-          />
-        </MaterialHeaderButtons>
-      ),
-    });
-  }, []);
-
-  const [isFABExtended, setIsFABExtended] = useState(true);
-  const onScrollScreen = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const verticalVelocity = e.nativeEvent.velocity?.y;
-    const offset = e.nativeEvent.contentOffset;
-
-    if (!verticalVelocity) {
-      return;
-    }
-
-    if (verticalVelocity < 0 || offset.y === 0) {
-      setIsFABExtended(true);
-    } else if (verticalVelocity > 0) {
-      setIsFABExtended(false);
-    }
-  };
 
   // Dialog: Create classroom
   const [isDialogShown, setIsDialogShown] = useState(false);
@@ -145,7 +109,7 @@ const StudentView = () => {
     //     </Dialog>
     //   </Portal>
     // </Screen>
-    <Screen withBackground source={require('@/../assets/ui/backgroundcolored.png')}>
+    <Screen withBackground>
       <IconButton
         icon="account-circle-outline"
         size={24}
@@ -155,18 +119,18 @@ const StudentView = () => {
         iconColor="#ffffff"
         onPress={() => navigation.navigate('Profile')}
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
         <ImageBackground
           source={require('@/../assets/ui/taskoftheday.png')}
           resizeMode="contain"
-          style={{ height: 800 }}>
+          style={{ aspectRatio: 593 / 807, flex: 1, marginHorizontal: 8 }}>
           <View
             style={{
               flex: 1,
-              marginLeft: '5%',
-              marginRight: '6.8%',
-              marginTop: '32%',
-              marginBottom: '52%',
+              marginTop: '18.5%',
+              marginBottom: '38%',
+              marginLeft: '4.5%',
+              marginRight: '6.5%',
             }}>
             <TaskOfTheDay
               disabled={!dailyTask || !isPlayable}
@@ -180,7 +144,7 @@ const StudentView = () => {
               style={{ marginTop: 8 }}
             />
             <List.Subheader style={{ color: '#ffffff', marginTop: 8 }}>Classrooms</List.Subheader>
-            <ClassroomsList data={classrooms} onScroll={onScrollScreen} />
+            <ClassroomsList data={classrooms} />
           </View>
         </ImageBackground>
       </View>

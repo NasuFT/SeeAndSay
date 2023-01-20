@@ -5,9 +5,9 @@ import React, {
   useLayoutEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from 'react';
+import { View } from 'react-native';
 import { millisecondsToSeconds } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
 
@@ -140,46 +140,86 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
   }, [isFinalRound, isSubmitting]);
 
   return (
-    <ScrollingScreen
-      contentContainerStyle={{
-        flexGrow: 1,
-        paddingHorizontal: 0,
-        alignItems: 'stretch',
-        paddingTop: 16,
-      }}
-      style={{ flexGrow: 1 }}>
-      <GameCounter
-        currentRound={currentRound}
-        totalRounds={game.rounds}
-        style={{ alignSelf: 'flex-end', marginRight: 16 }}
-      />
-      <Timer seconds={millisecondsToSeconds(time)} style={{ marginTop: 32, alignSelf: 'center' }} />
-      <FourImages sources={currentImageSources} style={{ marginTop: 32 }} />
-      <Text variant="titleMedium" style={{ margin: 16, textAlign: 'center' }}>{`Language: ${
-        currentGameItem.language === 'ph' ? 'Filipino' : 'English'
-      }`}</Text>
+    <ScrollingScreen withBackground contentContainerStyle={{ flexGrow: 1 }}>
+      <View
+        style={{
+          justifyContent: 'center',
+          zIndex: 1,
+          minHeight: 128,
+          flex: 1,
+        }}>
+        <Timer
+          seconds={millisecondsToSeconds(time)}
+          style={{ marginVertical: 16, alignSelf: 'center' }}
+        />
+        <View
+          style={{
+            position: 'absolute',
+            right: 16,
+            top: 16,
+          }}>
+          <GameCounter
+            currentRound={currentRound}
+            totalRounds={game.rounds}
+            style={{ alignSelf: 'flex-end' }}
+          />
+          <Button
+            icon={isFinalRound ? 'send' : 'arrow-right-bold-outline'}
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            style={{ borderRadius: 8, marginTop: 16 }}
+            mode="contained"
+            onLayout={(e) => console.log(`Button: ${e.nativeEvent.layout.height}`)}
+            onPress={handlePress}>
+            {isFinalRound ? 'Submit' : 'Next'}
+          </Button>
+        </View>
+      </View>
+      <View>
+        <FourImages
+          sources={currentImageSources}
+          style={{ borderWidth: 4, borderColor: '#facd89', backgroundColor: '#3c5e47' }}
+        />
+        <Text
+          variant="titleMedium"
+          style={{
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            includeFontPadding: false,
+            borderWidth: 4,
+            borderColor: '#facd89',
+            backgroundColor: '#3c5e47',
+            color: '#ffffff',
+            alignSelf: 'center',
+            marginTop: 8,
+            paddingVertical: 4,
+            paddingHorizontal: 12,
+          }}>{`Language: ${currentGameItem.language === 'ph' ? 'Filipino' : 'English'}`}</Text>
+      </View>
       <InputTiled
         length={currentGameItem.word.length}
         value={gameState.input}
         onChange={(value) => {
           dispatch({ type: 'SET_INPUT', payload: value });
         }}
-        style={{ marginTop: 16, flex: 1 }}
+        style={{ flex: 1 }}
       />
-      <SpeechToTextSuggest
-        onValueChange={(value) => {
-          dispatch({ type: 'SET_SUGGESTION', payload: value });
-        }}
-        style={{ marginHorizontal: 16 }}
-      />
-      <Button
-        mode="contained"
-        style={{ alignSelf: 'stretch', margin: 16 }}
-        onPress={() => {
-          dispatch({ type: 'USE_SUGGESTION' });
-        }}>
-        Use Suggested Word
-      </Button>
+      <View>
+        <SpeechToTextSuggest
+          onValueChange={(value) => {
+            dispatch({ type: 'SET_SUGGESTION', payload: value });
+          }}
+          style={{ marginHorizontal: 16 }}
+        />
+        <Button
+          mode="contained"
+          style={{ alignSelf: 'stretch', marginHorizontal: 16, marginBottom: 16, marginTop: 8 }}
+          onPress={() => {
+            dispatch({ type: 'USE_SUGGESTION' });
+          }}>
+          Use Suggested Word
+        </Button>
+      </View>
     </ScrollingScreen>
   );
 };

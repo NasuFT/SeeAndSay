@@ -28,38 +28,34 @@ const Profile = () => {
   }
 
   return (
-    <Screen style={{ paddingHorizontal: 0 }}>
-      <Avatar.Text label={getInitials(user.firstName, user.lastName)} size={96} />
-      <Text variant="displaySmall" numberOfLines={1} style={{ marginTop: 40 }}>
-        {getFullName(user.firstName, user.lastName)}
-      </Text>
-      <Text variant="bodyLarge" numberOfLines={1} style={{ marginTop: 8 }}>
-        {user.email}
-      </Text>
+    <Screen withBackground style={{ justifyContent: 'center', alignItems: 'stretch' }}>
+      <View
+        style={{
+          alignItems: 'center',
+          borderWidth: 4,
+          borderColor: '#facd89',
+          backgroundColor: '#3c5e47',
+          margin: 16,
+          padding: 16,
+        }}>
+        <Avatar.Text label={getInitials(user.firstName, user.lastName)} size={96} />
+        <Text variant="displaySmall" numberOfLines={1} style={{ marginTop: 40, color: '#ffffff' }}>
+          {getFullName(user.firstName, user.lastName)}
+        </Text>
+        <Text variant="bodyLarge" numberOfLines={1} style={{ marginTop: 8, color: '#ffffff' }}>
+          {user.email}
+        </Text>
 
-      <TouchableRipple onPress={toggleDarkTheme} style={{ marginTop: 48, alignSelf: 'stretch' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: 16,
-            paddingVertical: 8,
-          }}>
-          <Text>Dark Theme</Text>
-          <View pointerEvents="none">
-            <Switch value={isDarkTheme} />
-          </View>
-        </View>
-      </TouchableRipple>
-      <Button
-        style={{ marginTop: 32 }}
-        mode="contained"
-        onPress={showDialog}
-        buttonColor={theme.colors.error}
-        textColor={theme.colors.onError}>
-        Log out
-      </Button>
+        <Button
+          style={{ marginTop: 32 }}
+          mode="contained"
+          onPress={showDialog}
+          buttonColor={theme.colors.error}
+          textColor={theme.colors.onError}>
+          Log out
+        </Button>
+      </View>
+
       <Portal>
         <Dialog visible={isDialogShown} dismissable={false} onDismiss={hideDialog}>
           <Dialog.Title>Alert</Dialog.Title>

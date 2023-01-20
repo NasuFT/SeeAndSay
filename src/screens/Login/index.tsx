@@ -35,7 +35,7 @@ const Login = () => {
   //   </ScrollingScreen>
   // );
   return (
-    <Screen withBackground style={{ flex: 1 }}>
+    <Screen withBackground source={require('@/../assets/ui/background.png')} style={{ flex: 1 }}>
       <Logo />
       <LoginForm control={control} onSubmit={handleLoginPress} style={{ marginHorizontal: 16 }} />
     </Screen>

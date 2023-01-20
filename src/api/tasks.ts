@@ -69,24 +69,24 @@ const createRandomTask = async (type?: GameType, submissionDate?: Date) => {
 };
 
 const createDailyTask = async () => {
-//   const day = getDay(new Date());
+  //   const day = getDay(new Date());
 
-//   if (day === 0 || day === 6) {
-//     return null;
-//   }
+  //   if (day === 0 || day === 6) {
+  //     return null;
+  //   }
 
-//   const type: GameType =
-//     day === 1
-//       ? 'classic'
-//       : day === 2
-//       ? 'describeme'
-//       : day === 3
-//       ? 'puzzle'
-//       : day === 4
-//       ? 'scavengerhunt'
-//       : 'fourpicsoneword';
+  //   const type: GameType =
+  //     day === 1
+  //       ? 'classic'
+  //       : day === 2
+  //       ? 'describeme'
+  //       : day === 3
+  //       ? 'puzzle'
+  //       : day === 4
+  //       ? 'scavengerhunt'
+  //       : 'fourpicsoneword';
 
-  return await createRandomTask();
+  return await createRandomTask('classic');
 };
 
 export const getTask = async (taskId?: string) => {

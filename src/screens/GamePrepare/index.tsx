@@ -68,7 +68,6 @@ const GamePrepare = () => {
     // </Screen>
     <Screen
       withBackground
-      source={require('@/../assets/ui/backgroundcolored.png')}
       style={{ justifyContent: 'center', alignItems: 'stretch' }}>
       <View
         style={{
