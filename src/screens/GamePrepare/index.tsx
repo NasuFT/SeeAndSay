@@ -4,6 +4,7 @@ import { GameType } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import useGamePrepareContainer from './useGamePrepareContainer';
 
@@ -45,21 +46,57 @@ const GamePrepare = () => {
   };
 
   return (
-    <Screen>
-      <Text variant="headlineLarge" numberOfLines={1} adjustsFontSizeToFit>
-        {dailyTask.game.title}
-      </Text>
-      <Text variant="titleLarge" style={{ marginTop: 32 }}>
-        {getGameTypeTitle(game.type)}
-      </Text>
-      <Text variant="labelLarge" style={{ marginTop: 8 }}>
-        {format(dailyTask.submissionDate, 'MMMM d, yyyy')}
-      </Text>
+    // <Screen withBackground source={require('@/../assets/ui/backgroundcolored.png')}>
+    //   <Text variant="headlineLarge" numberOfLines={1} adjustsFontSizeToFit>
+    //     {dailyTask.game.title}
+    //   </Text>
+    //   <Text variant="titleLarge" style={{ marginTop: 32 }}>
+    //     {getGameTypeTitle(game.type)}
+    //   </Text>
+    //   <Text variant="labelLarge" style={{ marginTop: 8 }}>
+    //     {format(dailyTask.submissionDate, 'MMMM d, yyyy')}
+    //   </Text>
+    //   <Button
+    //     onPress={handleStartPress}
+    //     mode="contained"
+    //     contentStyle={{ paddingHorizontal: 8 }}
+    //     style={{ marginTop: 32 }}
+    //     disabled={isLoading}
+    //     loading={isLoading}>
+    //     Start
+    //   </Button>
+    // </Screen>
+    <Screen
+      withBackground
+      source={require('@/../assets/ui/backgroundcolored.png')}
+      style={{ justifyContent: 'center', alignItems: 'stretch' }}>
+      <View
+        style={{
+          margin: 16,
+          paddingVertical: 16,
+          borderWidth: 4,
+          borderColor: '#facd89',
+          backgroundColor: '#3c5e47',
+        }}>
+        <Text
+          variant="headlineLarge"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{ color: '#ffffff', textAlign: 'center' }}>
+          {dailyTask.game.title}
+        </Text>
+        <Text variant="titleLarge" style={{ marginTop: 32, color: '#ffffff', textAlign: 'center' }}>
+          {getGameTypeTitle(game.type)}
+        </Text>
+        <Text variant="labelLarge" style={{ marginTop: 8, color: '#ffffff', textAlign: 'center' }}>
+          {format(dailyTask.submissionDate, 'MMMM d, yyyy')}
+        </Text>
+      </View>
       <Button
         onPress={handleStartPress}
         mode="contained"
         contentStyle={{ paddingHorizontal: 8 }}
-        style={{ marginTop: 32 }}
+        style={{ marginTop: 16, alignSelf: 'center' }}
         disabled={isLoading}
         loading={isLoading}>
         Start

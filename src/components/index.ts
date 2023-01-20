@@ -1,6 +1,7 @@
 export { default as Screen } from './ui/Screen';
 export { default as ScrollingScreen } from './ui/ScrollingScreen';
 export { default as Button } from './ui/Button';
+export { default as Logo } from './ui/Logo';
 
 export { default as TextField } from './fields/TextField';
 export { default as SegmentedButtonField } from './fields/SegmentedButtonField';

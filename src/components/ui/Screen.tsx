@@ -1,16 +1,33 @@
-import { View, ViewProps } from 'react-native';
+import {
+  View,
+  ViewProps,
+  ImageBackground,
+  ImageSourcePropType,
+  ImageResizeMode,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface Props extends ViewProps {}
+interface Props extends ViewProps {
+  withBackground?: boolean;
+  source?: ImageSourcePropType;
+  resizeMode?: ImageResizeMode;
+}
 
-const Screen = ({ style, ...rest }: Props) => {
-  return (
-    <View
-      {...rest}
+const Screen = ({ style, withBackground = false, ...rest }: Props) => {
+  const insets = useSafeAreaInsets();
+
+  return withBackground ? (
+    <ImageBackground
+      source={require('@/../assets/ui/background.png')}
+      resizeMode="stretch"
       style={[
-        { alignItems: 'center', justifyContent: 'center', flex: 1, paddingHorizontal: 16 },
+        { alignSelf: 'stretch', flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom },
         style,
       ]}
+      {...rest}
     />
+  ) : (
+    <View style={[{ alignSelf: 'stretch', flex: 1 }, style]} {...rest} />
   );
 };
 

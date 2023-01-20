@@ -30,19 +30,13 @@ const GradeComparison = ({ previousGrade, currentGrade, style }: Props) => {
   return (
     <View style={[{ alignSelf: 'stretch', flexDirection: 'row' }, style]}>
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text variant="titleLarge" style={{ textAlign: 'center' }}>
-          {previousGrade ? round(previousGrade).toString() : '--'}
-        </Text>
-        <Text variant="labelLarge" style={{ textAlign: 'center' }}>
-          Yesterday's Grade
+        <Text variant="titleLarge" style={{ textAlign: 'center', color: '#ffffff' }}>
+          {`Yesterday: ${previousGrade ? round(previousGrade).toString() : '--'}`}
         </Text>
       </View>
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text variant="titleLarge" style={{ textAlign: 'center' }}>
-          {currentGrade ? round(currentGrade).toString() : '--'}
-        </Text>
-        <Text variant="labelLarge" style={{ textAlign: 'center' }}>
-          Today's Grade
+        <Text variant="titleLarge" style={{ textAlign: 'center', color: '#ffffff' }}>
+          {`Today: ${currentGrade ? round(currentGrade).toString() : '--'}`}
         </Text>
       </View>
       <View style={{ flex: 0.25, justifyContent: 'center' }}>
@@ -61,7 +55,7 @@ const GradeComparison = ({ previousGrade, currentGrade, style }: Props) => {
               ? theme.dark
                 ? '#81c784'
                 : '#388e3c'
-              : theme.colors.onSurface
+              : '#ffffff'
           }
           size={22}
         />

@@ -1,7 +1,16 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { AnimatedFAB, Dialog, List, Menu, Portal, Snackbar } from 'react-native-paper';
+import {
+  AnimatedFAB,
+  Dialog,
+  FAB,
+  IconButton,
+  List,
+  Menu,
+  Portal,
+  Snackbar,
+} from 'react-native-paper';
 import { Item } from 'react-navigation-header-buttons';
 
 import { Button, MaterialHeaderButtons, Screen } from '@/components';
@@ -86,29 +95,98 @@ const TeacherView = () => {
   }, []);
 
   return (
-    <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
-      <View style={{ height: 8 }} />
-      <List.Subheader>Classrooms</List.Subheader>
-      <ClassroomsList
-        data={classrooms}
-        onItemPress={(_, data) => {
-          navigation.navigate('Classroom', { id: data.id });
-        }}
-        onItemLongPress={(event, data) => {
-          const { pageX, pageY } = event.nativeEvent;
-          setAnchor({ x: pageX, y: pageY });
-          setMenuItem(data);
-          openMenu();
-        }}
-        onScroll={onScrollScreen}
+    // <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
+    //   <View style={{ height: 8 }} />
+    //   <List.Subheader>Classrooms</List.Subheader>
+    //   <ClassroomsList
+    //     data={classrooms}
+    //     onItemPress={(_, data) => {
+    //       navigation.navigate('Classroom', { id: data.id });
+    //     }}
+    //     onItemLongPress={(event, data) => {
+    //       const { pageX, pageY } = event.nativeEvent;
+    //       setAnchor({ x: pageX, y: pageY });
+    //       setMenuItem(data);
+    //       openMenu();
+    //     }}
+    //     onScroll={onScrollScreen}
+    //   />
+    //   <AnimatedFAB
+    //     label="Create"
+    //     icon="plus"
+    //     extended={isFABExtended}
+    //     onPress={showDialog}
+    //     style={{ position: 'absolute', bottom: 24, right: 24 }}
+    //   />
+    //   <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
+    //     <Menu.Item title="Copy code" onPress={onMenuCopyCodePress} />
+    //   </Menu>
+    //   <Snackbar visible={snackBarVisible} onDismiss={dismissSnackBar} duration={5000}>
+    //     Copied to clipboard.
+    //   </Snackbar>
+
+    //   <Portal>
+    //     <Dialog visible={isDialogShown} dismissable={false} onDismiss={hideDialog}>
+    //       <Dialog.Title>Create Classroom</Dialog.Title>
+    //       <Dialog.Content>
+    //         <CreateClassroomForm control={control} />
+    //       </Dialog.Content>
+    //       <Dialog.Actions>
+    //         <Button onPress={hideDialog} disabled={isCreatingClassroom}>
+    //           Cancel
+    //         </Button>
+    //         <Button
+    //           onPress={handleUserCreateClassroom(onDialogPressCreate)}
+    //           disabled={isCreatingClassroom}
+    //           loading={isCreatingClassroom}>
+    //           Create
+    //         </Button>
+    //       </Dialog.Actions>
+    //     </Dialog>
+    //   </Portal>
+    // </Screen>
+    <Screen withBackground source={require('@/../assets/ui/backgroundcolored.png')}>
+      <IconButton
+        icon="account-circle-outline"
+        size={24}
+        style={{ alignSelf: 'flex-end', borderColor: '#facd89', borderWidth: 2, marginRight: 16 }}
+        mode="contained"
+        containerColor="#3c5e47"
+        iconColor="#ffffff"
+        onPress={() => navigation.navigate('Profile')}
       />
-      <AnimatedFAB
+      <View
+        style={{
+          margin: 16,
+          borderWidth: 4,
+          borderColor: '#facd89',
+          flex: 1,
+          backgroundColor: '#3c5e47',
+        }}>
+        <List.Subheader style={{ color: '#ffffff' }}>Classrooms</List.Subheader>
+        <ClassroomsList
+          data={classrooms}
+          onItemPress={(_, data) => {
+            navigation.navigate('Classroom', { id: data.id });
+          }}
+          onItemLongPress={(event, data) => {
+            const { pageX, pageY } = event.nativeEvent;
+            setAnchor({ x: pageX, y: pageY });
+            setMenuItem(data);
+            openMenu();
+          }}
+          onScroll={onScrollScreen}
+        />
+      </View>
+
+      <FAB
         label="Create"
         icon="plus"
-        extended={isFABExtended}
+        visible
+        style={{ alignSelf: 'flex-end', marginBottom: 24, marginRight: 24 }}
         onPress={showDialog}
-        style={{ position: 'absolute', bottom: 24, right: 24 }}
       />
+
       <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
         <Menu.Item title="Copy code" onPress={onMenuCopyCodePress} />
       </Menu>

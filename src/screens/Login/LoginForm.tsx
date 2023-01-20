@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { upperFirst } from 'lodash';
 import { Control, Controller, useFormState } from 'react-hook-form';
 
@@ -8,13 +8,14 @@ import { LoginFormData } from '@/types';
 interface Props {
   control: Control<LoginFormData>;
   onSubmit?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-const LoginForm = ({ control, onSubmit }: Props) => {
+const LoginForm = ({ control, onSubmit, style }: Props) => {
   const { isSubmitting } = useFormState({ control });
 
   return (
-    <View style={{ justifyContent: 'center', flex: 1, marginVertical: 16 }}>
+    <View style={[{ justifyContent: 'center', flex: 1, marginVertical: 16 }, style]}>
       <Controller
         control={control}
         name="email"

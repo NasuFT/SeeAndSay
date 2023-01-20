@@ -22,10 +22,10 @@ const RootNavigator = () => {
   const isSignOut = useSelector((state: RootState) => state.users.isSignOut);
 
   return (
-    <Stack.Navigator initialRouteName="Start">
+    <Stack.Navigator initialRouteName="Start" screenOptions={{ headerShown: false }}>
       {!user ? (
         <Stack.Group screenOptions={{ animationTypeForReplace: isSignOut ? 'pop' : 'push' }}>
-          <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
+          <Stack.Screen name="Start" component={Start} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
         </Stack.Group>
