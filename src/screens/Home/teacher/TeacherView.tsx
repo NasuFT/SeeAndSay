@@ -95,56 +95,6 @@ const TeacherView = () => {
   }, []);
 
   return (
-    // <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
-    //   <View style={{ height: 8 }} />
-    //   <List.Subheader>Classrooms</List.Subheader>
-    //   <ClassroomsList
-    //     data={classrooms}
-    //     onItemPress={(_, data) => {
-    //       navigation.navigate('Classroom', { id: data.id });
-    //     }}
-    //     onItemLongPress={(event, data) => {
-    //       const { pageX, pageY } = event.nativeEvent;
-    //       setAnchor({ x: pageX, y: pageY });
-    //       setMenuItem(data);
-    //       openMenu();
-    //     }}
-    //     onScroll={onScrollScreen}
-    //   />
-    //   <AnimatedFAB
-    //     label="Create"
-    //     icon="plus"
-    //     extended={isFABExtended}
-    //     onPress={showDialog}
-    //     style={{ position: 'absolute', bottom: 24, right: 24 }}
-    //   />
-    //   <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
-    //     <Menu.Item title="Copy code" onPress={onMenuCopyCodePress} />
-    //   </Menu>
-    //   <Snackbar visible={snackBarVisible} onDismiss={dismissSnackBar} duration={5000}>
-    //     Copied to clipboard.
-    //   </Snackbar>
-
-    //   <Portal>
-    //     <Dialog visible={isDialogShown} dismissable={false} onDismiss={hideDialog}>
-    //       <Dialog.Title>Create Classroom</Dialog.Title>
-    //       <Dialog.Content>
-    //         <CreateClassroomForm control={control} />
-    //       </Dialog.Content>
-    //       <Dialog.Actions>
-    //         <Button onPress={hideDialog} disabled={isCreatingClassroom}>
-    //           Cancel
-    //         </Button>
-    //         <Button
-    //           onPress={handleUserCreateClassroom(onDialogPressCreate)}
-    //           disabled={isCreatingClassroom}
-    //           loading={isCreatingClassroom}>
-    //           Create
-    //         </Button>
-    //       </Dialog.Actions>
-    //     </Dialog>
-    //   </Portal>
-    // </Screen>
     <Screen withBackground>
       <IconButton
         icon="account-circle-outline"

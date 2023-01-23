@@ -33,14 +33,14 @@ import { uploadGames, uploadUsers } from './helper';
 const AppContainer = () => {
   const { paperTheme, navigationTheme } = useTheme();
 
-  useEffect(() => {
-    const cb = async () => {
-      // uploadGames();
-      // uploadUsers();
-    };
+  // useEffect(() => {
+  //   const cb = async () => {
+  //     // uploadGames();
+  //     // uploadUsers();
+  //   };
 
-    cb();
-  }, []);
+  //   cb();
+  // }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

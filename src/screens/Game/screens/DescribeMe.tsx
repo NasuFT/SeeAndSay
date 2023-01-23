@@ -1,9 +1,19 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  Reducer,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
+import { View } from 'react-native';
 import { millisecondsToSeconds } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
 import { Item } from 'react-navigation-header-buttons';
 
-import { MaterialHeaderButtons, ScrollingScreen } from '@/components';
+import { Button, MaterialHeaderButtons, ScrollingScreen } from '@/components';
 import useTimer from '@/hooks/useTimer';
 import { GameInfo } from '@/types/game';
 import { SubmissionDataDescribeMe } from '@/types';
@@ -13,6 +23,7 @@ import GameCounter from '../components/GameCounter';
 import Timer from '../components/Timer';
 import SingleImage from '../components/SingleImage';
 import FourChoices from '../components/FourChoices';
+import { Text } from 'react-native-paper';
 
 interface Props {
   game: GameInfo;
@@ -22,12 +33,39 @@ interface Props {
     | ((answers: SubmissionDataDescribeMe, time: number) => Promise<void>);
 }
 
+interface GameState {
+  input: string[];
+  answers: string[][];
+}
+
+type Action =
+  | {
+      type: 'SET_INPUT';
+      payload: string[];
+    }
+  | { type: 'USE_INPUT' };
+
+const gameStateReducer = (state: GameState, action: Action): GameState => {
+  if (action.type === 'SET_INPUT') {
+    return {
+      ...state,
+      input: action.payload,
+    };
+  } else {
+    return {
+      ...state,
+      input: [],
+      answers: state.answers.concat([state.input]),
+    };
+  }
+};
+
 const DescribeMe = ({ game, images, onSubmit }: Props) => {
   const { data, type, rounds, seconds } = game;
   const { time, startTimer, stopTimer } = useTimer(seconds * 1000);
 
   if (type !== 'describeme') {
-    throw new Error('Game Type must be "classic"');
+    throw new Error('Game Type must be "describeme"');
   }
 
   useLayoutEffect(() => {
@@ -36,83 +74,89 @@ const DescribeMe = ({ game, images, onSubmit }: Props) => {
     return () => stopTimer();
   }, []);
 
-  const [value, _setValue] = useState<string[]>([]);
-  const valueRef = useRef(value);
+  const [gameState, dispatch] = useReducer<Reducer<GameState, Action>>(gameStateReducer, {
+    input: [],
+    answers: [],
+  });
+
   const [currentRound, setCurrentRound] = useState(1);
   const isFinalRound = useMemo(() => currentRound === rounds, [currentRound, rounds]);
-  const [answers, _setAnswers] = useState<string[][]>([]);
-  const answersRef = useRef(answers);
-
-  const setValue = (value: string[]) => {
-    valueRef.current = value;
-    _setValue(value);
-  };
-
-  const setAnswers = (value: string[][]) => {
-    answersRef.current = value;
-    _setAnswers(value);
-  };
 
   const currentGameItem = useMemo(() => data[currentRound - 1], [data, currentRound]);
   const currentImageSource = useMemo(() => images[currentRound - 1], [images, currentRound]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handlePress = useCallback(async () => {
-    if (isFinalRound) {
-      try {
-        const data: SubmissionDataDescribeMe = answersRef.current
-          .concat([valueRef.current])
-          .map((answers) => ({ answers }));
-        setIsSubmitting(true);
-        await onSubmit?.(data, time);
-      } finally {
-        setIsSubmitting(false);
-      }
-      return;
+    dispatch({ type: 'USE_INPUT' });
+    if (!isFinalRound) {
+      setCurrentRound((round) => round + 1);
     }
-
-    const newAnswers = answersRef.current.concat([valueRef.current]);
-    setAnswers(newAnswers);
-    setCurrentRound((round) => round + 1);
-    setValue([]);
   }, [isFinalRound]);
 
-  const navigation = useNavigation<RootStackScreenProps<'Game'>['navigation']>();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <MaterialHeaderButtons>
-          <Item
-            title={isFinalRound ? 'Submit' : 'Next'}
-            onPress={handlePress}
-            disabled={isSubmitting}
-          />
-        </MaterialHeaderButtons>
-      ),
-    });
-  }, [isFinalRound, isSubmitting]);
+  useEffect(() => {
+    if (gameState.answers.length === rounds) {
+      const cb = async () => {
+        try {
+          const data: SubmissionDataDescribeMe = gameState.answers.map((answers) => ({
+            answers,
+          }));
+          setIsSubmitting(true);
+          await onSubmit?.(data, time);
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
+
+      cb();
+    }
+  }, [gameState.answers, rounds]);
 
   return (
-    <ScrollingScreen
-      contentContainerStyle={{
-        flexGrow: 1,
-        paddingHorizontal: 0,
-        alignItems: 'stretch',
-        paddingTop: 16,
-      }}
-      style={{ flexGrow: 1 }}>
-      <GameCounter
-        currentRound={currentRound}
-        totalRounds={game.rounds}
-        style={{ alignSelf: 'flex-end', marginRight: 16 }}
+    <ScrollingScreen withBackground contentContainerStyle={{ flexGrow: 1 }}>
+      <View
+        style={{
+          justifyContent: 'center',
+          zIndex: 1,
+          minHeight: 128,
+          flex: 1,
+        }}>
+        <Timer
+          seconds={millisecondsToSeconds(time)}
+          style={{ marginVertical: 16, alignSelf: 'center' }}
+        />
+        <View
+          style={{
+            position: 'absolute',
+            right: 16,
+            top: 16,
+          }}>
+          <GameCounter
+            currentRound={currentRound}
+            totalRounds={rounds}
+            style={{ alignSelf: 'flex-end' }}
+          />
+          <Button
+            icon={isFinalRound ? 'send' : 'arrow-right-bold-outline'}
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            style={{ borderRadius: 8, marginTop: 16 }}
+            mode="contained"
+            onPress={handlePress}>
+            {isFinalRound ? 'Submit' : 'Next'}
+          </Button>
+        </View>
+      </View>
+      <SingleImage
+        source={currentImageSource}
+        style={{ borderWidth: 4, borderColor: '#facd89', backgroundColor: '#3c5e47' }}
       />
-      <Timer seconds={millisecondsToSeconds(time)} style={{ marginTop: 32, alignSelf: 'center' }} />
-      <SingleImage source={currentImageSource} style={{ marginTop: 32 }} />
       <FourChoices
         values={currentGameItem.choices}
-        value={value}
-        onValueChange={setValue}
-        style={{ marginTop: 16, flex: 1 }}
+        value={gameState.input}
+        onValueChange={(value) => {
+          dispatch({ type: 'SET_INPUT', payload: value });
+        }}
+        style={{ flex: 1 }}
       />
     </ScrollingScreen>
   );

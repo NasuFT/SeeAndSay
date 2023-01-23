@@ -1,9 +1,10 @@
 import { Screen } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useEffect } from 'react';
-import { Text } from 'react-native-paper';
+import { View } from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
 import GradeChart from './components/GradeChart';
 import useSubmissionInfoContainer from './useSubmissionInfoContainer';
 
@@ -17,9 +18,35 @@ const SubmissionInfo = () => {
     getSubmissions(id);
   }, []);
 
+  const navigation = useNavigation<RootStackScreenProps<'SubmissionInfo'>['navigation']>();
+
   return (
-    <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
-      <GradeChart data={submissions} style={{ height: 400 }} />
+    <Screen withBackground>
+      <IconButton
+        icon="arrow-left"
+        size={24}
+        style={{
+          alignSelf: 'flex-start',
+          borderColor: '#facd89',
+          borderWidth: 2,
+          marginLeft: 16,
+        }}
+        mode="contained"
+        containerColor="#3c5e47"
+        iconColor="#ffffff"
+        onPress={() => navigation.goBack()}
+      />
+      <GradeChart
+        data={submissions}
+        style={{
+          height: 400,
+          borderWidth: 4,
+          borderColor: '#facd89',
+          backgroundColor: '#3c5e47',
+          margin: 16,
+          paddingBottom: 16,
+        }}
+      />
     </Screen>
   );
 };

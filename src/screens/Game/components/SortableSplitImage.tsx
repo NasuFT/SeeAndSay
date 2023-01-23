@@ -172,8 +172,6 @@ const SortableSplitImage = ({ size, imageSource, style, onValueChange, container
     <Animated.View
       style={[
         {
-          marginHorizontal: 16,
-          flex: 1,
           flexDirection: 'row',
           alignItems: 'center',
         },
@@ -186,10 +184,7 @@ const SortableSplitImage = ({ size, imageSource, style, onValueChange, container
             containerWidth.value = width;
             containerHeight.value = height;
           }}
-          style={[
-            { flex: 1, aspectRatio: 1, backgroundColor: theme.colors.primaryContainer },
-            containerStyle,
-          ]}>
+          style={[{ flex: 1, aspectRatio: 1 }, containerStyle]}>
           {[...Array(size * size)].map((_, index) => {
             return (
               <Animated.View key={index} style={[itemStyle, offsets[index]]}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View, ImageBackground } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Dialog, FAB, IconButton, List, Portal } from 'react-native-paper';
@@ -49,11 +49,13 @@ const StudentView = () => {
     }
   }, [dailyTask]);
 
-  useFocusEffect(() => {
-    if (dailyTask) {
-      getRecentSubmissions();
-    }
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (dailyTask) {
+        getRecentSubmissions();
+      }
+    }, [dailyTask])
+  );
 
   const handlePressDailyTask = async () => {
     if (!dailyTask) {
@@ -64,51 +66,6 @@ const StudentView = () => {
   };
 
   return (
-    // <Screen withBackground source={require('@/../assets/ui/backgroundcolored.png')}>
-    //   <TaskOfTheDay
-    //     disabled={!dailyTask || !isPlayable}
-    //     style={{ marginTop: 16 }}
-    //     task={dailyTask}
-    //     subtitleDisabled="No task for today!"
-    //     onPress={handlePressDailyTask}
-    //   />
-    //   <GradeComparison
-    //     previousGrade={previousSubmission?.grade}
-    //     currentGrade={currentSubmission?.grade}
-    //     style={{ marginTop: 16 }}
-    //   />
-    //   <View style={{ height: 24 }} />
-    //   <List.Subheader>Classrooms</List.Subheader>
-    //   <ClassroomsList data={classrooms} onScroll={onScrollScreen} />
-    //   <AnimatedFAB
-    //     label="Join"
-    //     icon="plus"
-    //     visible={true}
-    //     extended={isFABExtended}
-    //     onPress={showDialog}
-    //     style={{ position: 'absolute', bottom: 24, right: 24 }}
-    //   />
-
-    //   <Portal>
-    //     <Dialog visible={isDialogShown} dismissable={false} onDismiss={hideDialog}>
-    //       <Dialog.Title>Join Classroom</Dialog.Title>
-    //       <Dialog.Content>
-    //         <JoinClassroomForm control={control} />
-    //       </Dialog.Content>
-    //       <Dialog.Actions>
-    //         <Button onPress={hideDialog} disabled={isJoiningClassroom}>
-    //           Cancel
-    //         </Button>
-    //         <Button
-    //           onPress={handleUserJoinClassroom(onDialogPressJoin)}
-    //           disabled={isJoiningClassroom}
-    //           loading={isJoiningClassroom}>
-    //           Join
-    //         </Button>
-    //       </Dialog.Actions>
-    //     </Dialog>
-    //   </Portal>
-    // </Screen>
     <Screen withBackground>
       <IconButton
         icon="account-circle-outline"

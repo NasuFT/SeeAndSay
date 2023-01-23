@@ -22,7 +22,6 @@ const GameCounter = ({ style, currentRound, totalRounds }: Props) => {
         },
         style,
       ]}
-      onLayout={(e) => console.log(e.nativeEvent.layout.height)}
       elevation={1}>
       <Text
         variant="bodyLarge"
