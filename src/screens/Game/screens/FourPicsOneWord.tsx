@@ -129,7 +129,7 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
   }, [gameState.answers, rounds]);
 
   useEffect(() => {
-    if (time <= 0) {
+    if (time <= 0 && !isSubmitting) {
       const cb = async () => {
         try {
           const data: SubmissionDataFourPicsOneWord = gameState.answers.map((answer) => ({
@@ -144,7 +144,7 @@ const FourPicsOneWord = ({ game, imageSources, onSubmit }: Props) => {
 
       cb();
     }
-  }, [time, gameState.answers]);
+  }, [time, gameState.answers, isSubmitting]);
 
   const navigation = useNavigation<RootStackScreenProps<'Game'>['navigation']>();
   useLayoutEffect(() => {

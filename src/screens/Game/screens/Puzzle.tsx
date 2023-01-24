@@ -111,7 +111,7 @@ const Puzzle = ({ game, images, onSubmit }: Props) => {
   }, [gameState.answers, rounds]);
 
   useEffect(() => {
-    if (time <= 0) {
+    if (time <= 0 && !isSubmitting) {
       const cb = async () => {
         try {
           const data: SubmissionDataPuzzle = gameState.answers.map((answer) => ({ answer }));
@@ -124,7 +124,7 @@ const Puzzle = ({ game, images, onSubmit }: Props) => {
 
       cb();
     }
-  }, [time, gameState.answers]);
+  }, [time, gameState.answers, isSubmitting]);
 
   return (
     <ScrollingScreen withBackground contentContainerStyle={{ flexGrow: 1 }}>

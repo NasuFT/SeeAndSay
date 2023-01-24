@@ -125,7 +125,7 @@ const Classic = ({ game, images, onSubmit }: Props) => {
   }, [gameState.answers, rounds]);
 
   useEffect(() => {
-    if (time <= 0) {
+    if (time <= 0 && !isSubmitting) {
       const cb = async () => {
         try {
           const data: SubmissionDataClassic = gameState.answers.map((answer) => ({ answer }));
@@ -138,7 +138,7 @@ const Classic = ({ game, images, onSubmit }: Props) => {
 
       cb();
     }
-  }, [time, gameState.answers]);
+  }, [time, gameState.answers, isSubmitting]);
 
   const navigation = useNavigation<RootStackScreenProps<'Game'>['navigation']>();
   useLayoutEffect(() => {
