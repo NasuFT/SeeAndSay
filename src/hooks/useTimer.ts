@@ -3,8 +3,9 @@ import { now } from 'lodash';
 import { useCallback, useRef, useState } from 'react';
 
 interface TimerOptions {
-  onTimerStop?: () => void;
-  onTimerStart?: () => void;
+  onTimerStop?: () => void | Promise<void>;
+  onTimerStart?: () => void | Promise<void>;
+  onTimerDestroy?: () => void | Promise<void>;
 }
 
 const useTimer = (milliseconds: number, options: TimerOptions = {}) => {
@@ -35,7 +36,12 @@ const useTimer = (milliseconds: number, options: TimerOptions = {}) => {
     options?.onTimerStop?.();
   }, []);
 
-  return { time, startTimer, stopTimer };
+  const destroyTimer = useCallback(() => {
+    clearTimeout(timer.current);
+    options?.onTimerDestroy?.();
+  }, []);
+
+  return { time, startTimer, stopTimer, destroyTimer };
 };
 
 export default useTimer;

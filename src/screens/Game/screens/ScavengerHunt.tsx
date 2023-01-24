@@ -115,32 +115,23 @@ const ScavengerHunt = ({ game, images, onSubmit }: Props) => {
     }
   }, [gameState.answers, rounds]);
 
+  useEffect(() => {
+    if (time <= 0) {
+      const cb = async () => {
+        try {
+          const data: SubmissionDataScavengerHunt = gameState.answers.map((answer) => ({ answer }));
+          setIsSubmitting(true);
+          await onSubmit?.(data, 0);
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
+
+      cb();
+    }
+  }, [time, gameState.answers]);
+
   return (
-    // <ScrollingScreen
-    //   contentContainerStyle={{
-    //     flexGrow: 1,
-    //     paddingHorizontal: 0,
-    //     alignItems: 'stretch',
-    //     paddingTop: 16,
-    //   }}
-    //   style={{ flexGrow: 1 }}>
-    //   <GameCounter
-    //     currentRound={round}
-    //     totalRounds={game.rounds}
-    //     style={{ alignSelf: 'flex-end', marginRight: 16 }}
-    //   />
-    //   <Timer seconds={millisecondsToSeconds(time)} style={{ marginTop: 32, alignSelf: 'center' }} />
-    //   <MarkableImage
-    //     imageSource={currentImageSource}
-    //     style={{ marginTop: 32 }}
-    //     onValueChange={setInput}
-    //   />
-    //   <View style={{ marginVertical: 40, paddingHorizontal: 16 }}>
-    //     <Text variant="titleMedium" style={{ textAlign: 'center' }}>
-    //       {currentGameItem.description}
-    //     </Text>
-    //   </View>
-    // </ScrollingScreen>
     <ScrollingScreen withBackground contentContainerStyle={{ flexGrow: 1 }}>
       <View
         style={{

@@ -110,6 +110,22 @@ const Puzzle = ({ game, images, onSubmit }: Props) => {
     }
   }, [gameState.answers, rounds]);
 
+  useEffect(() => {
+    if (time <= 0) {
+      const cb = async () => {
+        try {
+          const data: SubmissionDataPuzzle = gameState.answers.map((answer) => ({ answer }));
+          setIsSubmitting(true);
+          await onSubmit?.(data, 0);
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
+
+      cb();
+    }
+  }, [time, gameState.answers]);
+
   return (
     <ScrollingScreen withBackground contentContainerStyle={{ flexGrow: 1 }}>
       <View

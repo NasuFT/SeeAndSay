@@ -103,7 +103,7 @@ const DataTable = ({ submissions, students, style }: Props) => {
             textStyle={{
               color: '#ffffff',
             }}>
-            {submission.grade.toFixed(2)}
+            {submission.grade ? submission.grade.toFixed(2) : Number(0).toFixed(2)}
           </Table.Cell>
         </Table.Row>
       ))}

@@ -25,7 +25,10 @@ const computeGrade = (task: Task, submissionData: any[]) => {
         accumulator + getMatchingCharacters(item.answer, gameData[index].word),
       0
     );
-    const totalCharacters = data.reduce((accumulator, item) => accumulator + item.answer.length, 0);
+    const totalCharacters = gameData.reduce(
+      (accumulator, item) => accumulator + item.word.length,
+      0
+    );
     return (correctCharacters / totalCharacters) * 100;
   } else if (type === 'fourpicsoneword') {
     const data = submissionData as SubmissionDataFourPicsOneWord;
@@ -34,7 +37,10 @@ const computeGrade = (task: Task, submissionData: any[]) => {
         accumulator + getMatchingCharacters(item.answer, gameData[index].word),
       0
     );
-    const totalCharacters = data.reduce((accumulator, item) => accumulator + item.answer.length, 0);
+    const totalCharacters = gameData.reduce(
+      (accumulator, item) => accumulator + item.word.length,
+      0
+    );
     return (correctCharacters / totalCharacters) * 100;
   } else if (type === 'describeme') {
     const data = submissionData as SubmissionDataDescribeMe;
@@ -48,7 +54,7 @@ const computeGrade = (task: Task, submissionData: any[]) => {
         ),
       0
     );
-    const totalChoices = data.reduce((accumulator, item) => accumulator + item.answers.length, 0);
+    const totalChoices = gameData.reduce((accumulator, item) => accumulator + item.answers.length, 0);
 
     return (correctAnswers / totalChoices) * 100;
   } else if (type === 'puzzle') {
