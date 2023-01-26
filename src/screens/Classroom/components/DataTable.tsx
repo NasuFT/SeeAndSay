@@ -42,20 +42,25 @@ const DataTable = ({ submissions = [], students = [], style }: Props) => {
 
   const sortedSubmissions = useMemo(
     () =>
-      sortedStudentIDs.map((student) => {
-        const studentSubmission = submissions.find(
-          (submission) => submission.user.id === student.id
-        ) as SubmissionInfo;
+      sortedStudentIDs
+        .filter(
+          (student) =>
+            submissions.find((submission) => submission.user.id === student.id) !== undefined
+        )
+        .map((student) => {
+          const studentSubmission = submissions.find(
+            (submission) => submission.user.id === student.id
+          ) as SubmissionInfo;
 
-        return {
-          ...studentSubmission,
-          user: {
-            ...studentSubmission.user,
-            firstName: student.firstName,
-            lastName: student.lastName,
-          },
-        };
-      }),
+          return {
+            ...studentSubmission,
+            user: {
+              ...studentSubmission.user,
+              firstName: student.firstName,
+              lastName: student.lastName,
+            },
+          };
+        }),
     [submissions, sortedStudentIDs]
   );
 
