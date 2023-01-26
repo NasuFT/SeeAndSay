@@ -23,7 +23,7 @@ const getGameTypeTitle = (type: GameType) => {
       'Scavenger Hunt';
 };
 
-const DataTable = ({ submissions, students, style }: Props) => {
+const DataTable = ({ submissions = [], students = [], style }: Props) => {
   const sortedStudentIDs = useMemo(
     () =>
       students.slice().sort((a, b) => {

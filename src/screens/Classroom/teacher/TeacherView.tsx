@@ -4,7 +4,7 @@ import { Screen } from '@/components';
 import useTeacherView from './useTeacherView';
 import EnrollList from '../components/EnrollList';
 import { useEffect } from 'react';
-import { Enroll, User } from '@/types';
+import { User } from '@/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackScreenProps } from '@/navigators/types';
 import AverageGradeChart from '../components/AverageGradeChart';
@@ -26,7 +26,7 @@ const TeacherView = () => {
 
   useEffect(() => {
     if (dailyTask) {
-      getSubmissions(dailyTask.id);
+      getSubmissions(dailyTask.id, id);
     }
   }, [dailyTask]);
 

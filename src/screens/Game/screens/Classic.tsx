@@ -181,7 +181,6 @@ const Classic = ({ game, images, onSubmit }: Props) => {
             loading={isSubmitting}
             style={{ borderRadius: 8, marginTop: 16 }}
             mode="contained"
-            onLayout={(e) => console.log(`Button: ${e.nativeEvent.layout.height}`)}
             onPress={handlePress}>
             {isFinalRound ? 'Submit' : 'Next'}
           </Button>

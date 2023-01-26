@@ -112,10 +112,7 @@ const SpeechToTextSuggest = ({ onValueChange, style }: Props) => {
 
       const speechRecognizers = await Voice.getSpeechRecognitionServices();
 
-      if (
-        !speechRecognizers ||
-        !speechRecognizers.includes('com.google.android.googlequicksearchbox')
-      ) {
+      if (!speechRecognizers || speechRecognizers.length === 0) {
         dispatch({ type: 'SET_RECOGNIZER_UNAVAILABLE' });
       }
     };
@@ -138,6 +135,11 @@ const SpeechToTextSuggest = ({ onValueChange, style }: Props) => {
           type: 'SET_SUGGESTION',
           payload: result.find((word) => word.split(' ').length === 1) ?? '',
         });
+      } else if (result && result.length === 0) {
+        dispatch({
+          type: 'SET_ERROR',
+          payload: 'Could not recognize! Try again.',
+        });
       }
     };
 
@@ -149,6 +151,11 @@ const SpeechToTextSuggest = ({ onValueChange, style }: Props) => {
   useEffect(() => {
     onValueChange?.(voiceState.suggestion);
   }, [voiceState.suggestion]);
+
+  useEffect(() => {
+    console.log(voiceState.status);
+    console.log(voiceState.error);
+  }, [voiceState.status]);
 
   return (
     <View style={style}>

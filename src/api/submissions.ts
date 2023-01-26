@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import {
+  Enroll,
   SubmissionData,
   SubmissionDataClassic,
   SubmissionDataDescribeMe,
@@ -10,9 +11,11 @@ import {
   Task,
 } from '@/types';
 import { getMatchingCharacters, interpolate } from '@/utils/helper';
-import { SUBMISSIONS_COLLECTION } from './constants';
+import { ENROLLS_COLLECTION, SUBMISSIONS_COLLECTION } from './constants';
 import { startOfDay, startOfToday } from 'date-fns';
 import { getTask } from './tasks';
+import { getEnrolledStudents } from './classrooms';
+import { chunk } from 'lodash';
 
 const computeGrade = (task: Task, submissionData: any[]) => {
   const { game } = task;
@@ -54,7 +57,10 @@ const computeGrade = (task: Task, submissionData: any[]) => {
         ),
       0
     );
-    const totalChoices = gameData.reduce((accumulator, item) => accumulator + item.answers.length, 0);
+    const totalChoices = gameData.reduce(
+      (accumulator, item) => accumulator + item.answers.length,
+      0
+    );
 
     return (correctAnswers / totalChoices) * 100;
   } else if (type === 'puzzle') {
@@ -152,6 +158,47 @@ export const getTaskSubmissions = async (taskId: string) => {
     return submission;
   });
 
+  return submissions;
+};
+
+export const getTaskSubmissionsByClassroomID = async (taskId: string, classroomId: string) => {
+  const submissionsCollection = firestore().collection(SUBMISSIONS_COLLECTION);
+  const enrollsCollection = firestore().collection(ENROLLS_COLLECTION);
+
+  const enrollsQuery = enrollsCollection.where('classroomId', '==', classroomId);
+  const enrollsSnapshot = await enrollsQuery.get();
+  const studentIds = enrollsSnapshot.docs.map((document) => {
+    const enroll = document.data() as Enroll;
+    return enroll.student.id;
+  });
+
+  const chunkedStudentIds = chunk(studentIds, 10);
+  const submissionQueries = await Promise.all(
+    chunkedStudentIds.map(async (userIds) => {
+      const query = submissionsCollection
+        .where('task.id', '==', taskId)
+        .where('user.id', 'in', userIds);
+      const snapshot = await query.get();
+
+      const submissions = snapshot.docs.map((document) => {
+        const data = document.data();
+        const submission = {
+          ...data,
+          timestamp: data.timestamp.toDate(),
+          task: {
+            ...data.task,
+            submissionDate: data.task.submissionDate.toDate(),
+          },
+        } as SubmissionInfo;
+
+        return submission;
+      });
+
+      return submissions;
+    })
+  );
+
+  const submissions = submissionQueries.flat();
   return submissions;
 };
 
