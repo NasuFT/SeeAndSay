@@ -8,7 +8,7 @@ import { User } from '@/types';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackScreenProps } from '@/navigators/types';
 import AverageGradeChart from '../components/AverageGradeChart';
-import { Button, IconButton, List } from 'react-native-paper';
+import { Button, IconButton, List, Text } from 'react-native-paper';
 import DataTable from '../components/DataTable';
 
 const TeacherView = () => {
@@ -16,12 +16,21 @@ const TeacherView = () => {
   const {
     params: { id },
   } = useRoute<RootStackScreenProps<'Classroom'>['route']>();
-  const { students, getStudents, submissions, getSubmissions, dailyTask, getDailyTask } =
-    useTeacherView();
+  const {
+    students,
+    getStudents,
+    submissions,
+    getSubmissions,
+    dailyTask,
+    getDailyTask,
+    classroom,
+    getClassroom,
+  } = useTeacherView();
 
   useEffect(() => {
     getStudents(id);
     getDailyTask();
+    getClassroom(id);
   }, []);
 
   useEffect(() => {
@@ -63,17 +72,36 @@ const TeacherView = () => {
         </Button>
       </View>
       {isTable ? (
-        <DataTable
-          submissions={submissions}
-          students={students}
-          style={{
-            borderWidth: 4,
-            borderColor: '#facd89',
-            backgroundColor: '#3c5e47',
-            margin: 8,
-            width: undefined,
-          }}
-        />
+        <>
+          <Text
+            variant="bodyLarge"
+            style={{
+              color: '#ffffff',
+              borderWidth: 4,
+              borderColor: '#facd89',
+              backgroundColor: '#3c5e47',
+              includeFontPadding: false,
+              textAlignVertical: 'center',
+              margin: 8,
+              alignSelf: 'flex-start',
+              textAlign: 'left',
+              paddingVertical: 8,
+              paddingHorizontal: 16,
+            }}>
+            {classroom === null ? '' : classroom.name}
+          </Text>
+          <DataTable
+            submissions={submissions}
+            students={students}
+            style={{
+              borderWidth: 4,
+              borderColor: '#facd89',
+              backgroundColor: '#3c5e47',
+              margin: 8,
+              width: undefined,
+            }}
+          />
+        </>
       ) : (
         <>
           <AverageGradeChart

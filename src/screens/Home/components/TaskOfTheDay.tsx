@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
 import { format } from 'date-fns';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 
 import { Task } from '@/types';
 
@@ -20,6 +20,8 @@ const TaskOfTheDay = ({
   subtitleDisabled = '',
   task,
 }: Props) => {
+  const theme = useTheme();
+
   return (
     <View style={[{ alignSelf: 'stretch' }, style]}>
       <Pressable disabled={disabled} onPress={onPress}>
@@ -30,16 +32,12 @@ const TaskOfTheDay = ({
             borderRadius: 8,
             borderStyle: 'dashed',
             borderColor: 'gray',
+            backgroundColor: theme.colors.primaryContainer,
           }}>
-          <Text
-            variant="titleLarge"
-            numberOfLines={1}
-            style={{ textAlign: 'center', color: '#ffffff' }}>
+          <Text variant="titleLarge" numberOfLines={1} style={{ textAlign: 'center' }}>
             {task?.game.title ?? subtitleDisabled}
           </Text>
-          <Text
-            variant="labelLarge"
-            style={{ textAlign: 'center', color: '#ffffff', marginTop: 4 }}>
+          <Text variant="labelLarge" style={{ textAlign: 'center', marginTop: 4 }}>
             {task && format(task.submissionDate, 'MMMM d, yyyy')}
           </Text>
         </View>
