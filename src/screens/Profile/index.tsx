@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import {
   Avatar,
   Dialog,
+  IconButton,
   Portal,
   Switch,
   Text,
@@ -14,6 +15,8 @@ import { Button, Screen } from '@/components';
 
 import useProfileContainer from './useProfileContainer';
 import { getFullName, getInitials } from './helper';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackScreenProps } from '@/navigators/types';
 
 const Profile = () => {
   const { isDarkTheme, toggleDarkTheme, user, signOut, isSigningOut } = useProfileContainer();
@@ -27,39 +30,56 @@ const Profile = () => {
     return null;
   }
 
-  return (
-    <Screen style={{ paddingHorizontal: 0 }}>
-      <Avatar.Text label={getInitials(user.firstName, user.lastName)} size={96} />
-      <Text variant="displaySmall" numberOfLines={1} style={{ marginTop: 40 }}>
-        {getFullName(user.firstName, user.lastName)}
-      </Text>
-      <Text variant="bodyLarge" numberOfLines={1} style={{ marginTop: 8 }}>
-        {user.email}
-      </Text>
+  const navigation = useNavigation<RootStackScreenProps<'Profile'>['navigation']>();
 
-      <TouchableRipple onPress={toggleDarkTheme} style={{ marginTop: 48, alignSelf: 'stretch' }}>
+  return (
+    <Screen withBackground style={{ alignItems: 'stretch' }}>
+      <IconButton
+        icon="arrow-left"
+        size={24}
+        style={{
+          alignSelf: 'flex-start',
+          borderColor: '#facd89',
+          borderWidth: 2,
+          marginLeft: 16,
+        }}
+        mode="contained"
+        containerColor="#3c5e47"
+        iconColor="#ffffff"
+        onPress={() => navigation.goBack()}
+      />
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <View
           style={{
-            flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: 16,
-            paddingVertical: 8,
+            borderWidth: 4,
+            borderColor: '#facd89',
+            backgroundColor: '#3c5e47',
+            margin: 16,
+            padding: 16,
           }}>
-          <Text>Dark Theme</Text>
-          <View pointerEvents="none">
-            <Switch value={isDarkTheme} />
-          </View>
+          <Avatar.Text label={getInitials(user.firstName, user.lastName)} size={96} />
+          <Text
+            variant="displaySmall"
+            numberOfLines={1}
+            style={{ marginTop: 40, color: '#ffffff' }}>
+            {getFullName(user.firstName, user.lastName)}
+          </Text>
+          <Text variant="bodyLarge" numberOfLines={1} style={{ marginTop: 8, color: '#ffffff' }}>
+            {user.email}
+          </Text>
+
+          <Button
+            style={{ marginTop: 32 }}
+            mode="contained"
+            onPress={showDialog}
+            buttonColor={theme.colors.error}
+            textColor={theme.colors.onError}>
+            Log out
+          </Button>
         </View>
-      </TouchableRipple>
-      <Button
-        style={{ marginTop: 32 }}
-        mode="contained"
-        onPress={showDialog}
-        buttonColor={theme.colors.error}
-        textColor={theme.colors.onError}>
-        Log out
-      </Button>
+      </View>
+
       <Portal>
         <Dialog visible={isDialogShown} dismissable={false} onDismiss={hideDialog}>
           <Dialog.Title>Alert</Dialog.Title>

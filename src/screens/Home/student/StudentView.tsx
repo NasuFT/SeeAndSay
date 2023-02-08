@@ -1,10 +1,9 @@
-import { useLayoutEffect, useEffect, useState } from 'react';
-import { NativeSyntheticEvent, NativeScrollEvent, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { View, ImageBackground } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { AnimatedFAB, Dialog, List, Portal } from 'react-native-paper';
-import { Item } from 'react-navigation-header-buttons';
+import { Dialog, FAB, IconButton, List, Portal } from 'react-native-paper';
 
-import { Button, MaterialHeaderButtons, Screen } from '@/components';
+import { Button, Screen } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
 
 import ClassroomsList from '../components/ClassroomsList';
@@ -15,35 +14,6 @@ import GradeComparison from '../components/GradeComparison';
 
 const StudentView = () => {
   const navigation = useNavigation<RootStackScreenProps<'Home'>['navigation']>();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <MaterialHeaderButtons>
-          <Item
-            title="Profile"
-            iconName="account-circle-outline"
-            onPress={() => navigation.navigate('Profile')}
-          />
-        </MaterialHeaderButtons>
-      ),
-    });
-  }, []);
-
-  const [isFABExtended, setIsFABExtended] = useState(true);
-  const onScrollScreen = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const verticalVelocity = e.nativeEvent.velocity?.y;
-    const offset = e.nativeEvent.contentOffset;
-
-    if (!verticalVelocity) {
-      return;
-    }
-
-    if (verticalVelocity < 0 || offset.y === 0) {
-      setIsFABExtended(true);
-    } else if (verticalVelocity > 0) {
-      setIsFABExtended(false);
-    }
-  };
 
   // Dialog: Create classroom
   const [isDialogShown, setIsDialogShown] = useState(false);
@@ -79,11 +49,13 @@ const StudentView = () => {
     }
   }, [dailyTask]);
 
-  useFocusEffect(() => {
-    if (dailyTask) {
-      getRecentSubmissions();
-    }
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (dailyTask) {
+        getRecentSubmissions();
+      }
+    }, [dailyTask])
+  );
 
   const handlePressDailyTask = async () => {
     if (!dailyTask) {
@@ -94,29 +66,52 @@ const StudentView = () => {
   };
 
   return (
-    <Screen style={{ alignItems: 'stretch', paddingHorizontal: 0 }}>
-      <TaskOfTheDay
-        disabled={!dailyTask || !isPlayable}
-        style={{ marginTop: 16 }}
-        task={dailyTask}
-        subtitleDisabled="No task for today!"
-        onPress={handlePressDailyTask}
+    <Screen withBackground>
+      <IconButton
+        icon="account-circle-outline"
+        size={24}
+        style={{ alignSelf: 'flex-end', borderColor: '#facd89', borderWidth: 2, marginRight: 16 }}
+        mode="contained"
+        containerColor="#3c5e47"
+        iconColor="#ffffff"
+        onPress={() => navigation.navigate('Profile')}
       />
-      <GradeComparison
-        previousGrade={previousSubmission?.grade}
-        currentGrade={currentSubmission?.grade}
-        style={{ marginTop: 16 }}
-      />
-      <View style={{ height: 24 }} />
-      <List.Subheader>Classrooms</List.Subheader>
-      <ClassroomsList data={classrooms} onScroll={onScrollScreen} />
-      <AnimatedFAB
+      <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
+        <ImageBackground
+          source={require('@/../assets/ui/taskoftheday.png')}
+          resizeMode="contain"
+          style={{ aspectRatio: 593 / 807, flex: 1, marginHorizontal: 8 }}>
+          <View
+            style={{
+              flex: 1,
+              marginTop: '18.5%',
+              marginBottom: '38%',
+              marginLeft: '4.5%',
+              marginRight: '6.5%',
+            }}>
+            <TaskOfTheDay
+              disabled={!dailyTask || !isPlayable}
+              task={dailyTask}
+              subtitleDisabled="No task for today!"
+              onPress={handlePressDailyTask}
+            />
+            <GradeComparison
+              previousGrade={previousSubmission?.grade}
+              currentGrade={currentSubmission?.grade}
+              style={{ marginTop: 8 }}
+            />
+            <List.Subheader style={{ color: '#ffffff', marginTop: 8 }}>Classrooms</List.Subheader>
+            <ClassroomsList data={classrooms} />
+          </View>
+        </ImageBackground>
+      </View>
+
+      <FAB
         label="Join"
         icon="plus"
-        visible={true}
-        extended={isFABExtended}
+        visible
+        style={{ alignSelf: 'flex-end', marginBottom: 24, marginRight: 24 }}
         onPress={showDialog}
-        style={{ position: 'absolute', bottom: 24, right: 24 }}
       />
 
       <Portal>

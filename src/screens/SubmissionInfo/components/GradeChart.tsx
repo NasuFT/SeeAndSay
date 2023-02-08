@@ -1,7 +1,7 @@
 import { SubmissionInfo } from '@/types';
 import { format } from 'date-fns';
 import { useMemo } from 'react';
-import { StyleProp, ViewStyle, View } from 'react-native';
+import { StyleProp, ViewStyle, View, processColor } from 'react-native';
 import { LineChart, LineData, LineValue } from 'react-native-charts-wrapper';
 import { Text } from 'react-native-paper';
 
@@ -25,6 +25,9 @@ const GradeChart = ({ data, style, title }: Props) => {
         {
           values: chartValues,
           label: 'Grades',
+          config: {
+            valueTextColor: processColor('#ffffff'),
+          },
         },
       ],
     }),
@@ -50,12 +53,18 @@ const GradeChart = ({ data, style, title }: Props) => {
           axisMinimum: -0.5,
           axisMaximum: 4.5,
           position: 'BOTTOM',
+          textColor: processColor('#ffffff'),
           textSize: 12,
           valueFormatter: data.map((submission) => format(submission.timestamp, 'MMM d')),
           labelCount: data.length,
         }}
         yAxis={{
-          left: { granularity: 1, textSize: 12 },
+          left: {
+            granularity: 1,
+            textSize: 12,
+            axisMaximum: 100.1,
+            textColor: processColor('#ffffff'),
+          },
           right: { drawGridLines: false, drawLabels: false },
         }}
         legend={{ enabled: false }}

@@ -3,13 +3,16 @@ import Color from 'color';
 import { StatusBar as ExpoStatusBar, StatusBarProps } from 'expo-status-bar';
 import { useTheme } from '@react-navigation/native';
 
-const StatusBar = () => {
+interface Props {
+  color?: 'light' | 'dark';
+}
+
+const StatusBar = ({ color }: Props) => {
   const theme = useTheme();
 
   const config = useMemo<StatusBarProps>(
     () => ({
-      backgroundColor: theme.colors.card,
-      style: Color(theme.colors.text).isDark() ? 'dark' : 'light',
+      style: color ?? 'light',
     }),
     [theme]
   );

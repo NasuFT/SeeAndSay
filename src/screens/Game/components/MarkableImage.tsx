@@ -128,13 +128,12 @@ const MarkableImage = ({ imageSource, style, onValueChange }: Props) => {
   );
 
   return (
-    <View style={[{ flex: 1, alignItems: 'center', flexDirection: 'row' }, style]}>
+    <View style={[{ alignItems: 'center', flexDirection: 'row' }, style]}>
       <GestureDetector gesture={Gesture.Race(panGesture, pinchGesture, tapGesture)}>
         <Animated.View
           style={{
             aspectRatio: 1,
-            backgroundColor: theme.colors.primaryContainer,
-            marginHorizontal: 16,
+            margin: 8,
             flex: 1,
             overflow: 'hidden',
           }}

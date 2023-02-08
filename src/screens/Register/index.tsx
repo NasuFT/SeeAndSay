@@ -1,7 +1,8 @@
 import { useFormState } from 'react-hook-form';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Button, ScrollingScreen } from '@/components';
+import { Button, Screen, ScrollingScreen, StatusBar } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
 
 import RegisterForm from './RegisterForm';
@@ -17,14 +18,9 @@ const Register = () => {
   };
 
   return (
-    <>
-      <ScrollingScreen
-        contentContainerStyle={{
-          alignItems: 'stretch',
-          justifyContent: 'space-between',
-          flexGrow: 1,
-        }}
-        style={{ flexGrow: 1 }}>
+    <Screen>
+      <StatusBar color="dark" />
+      <View style={{ flex: 1, paddingHorizontal: 16, paddingBottom: 16 }}>
         <RegisterForm control={control} onSubmit={handleRegisterPress} />
         <Button
           disabled={isSubmitting}
@@ -33,8 +29,8 @@ const Register = () => {
           onPress={handleLoginPress}>
           Login Instead
         </Button>
-      </ScrollingScreen>
-    </>
+      </View>
+    </Screen>
   );
 };
 

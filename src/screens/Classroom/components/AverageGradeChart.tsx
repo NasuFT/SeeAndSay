@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { StyleProp, ViewStyle, View } from 'react-native';
+import { StyleProp, ViewStyle, View, TextStyle, processColor } from 'react-native';
 import { BarChart, BarData, BarValue } from 'react-native-charts-wrapper';
 import { Text } from 'react-native-paper';
 import { countBy, map } from 'lodash';
@@ -8,13 +8,14 @@ interface Props {
   data: number[];
   title?: string;
   style?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
 }
 
 const gradesBucket = (grade: number) => {
   return grade === 100 ? 9 : Math.floor(grade / 10);
 };
 
-const AverageGradeChart = ({ data, style, title }: Props) => {
+const AverageGradeChart = ({ data, style, title, titleStyle }: Props) => {
   const chartValues = useMemo<BarValue[]>(() => {
     const gradeCount = countBy(data, gradesBucket);
 
@@ -42,7 +43,7 @@ const AverageGradeChart = ({ data, style, title }: Props) => {
       {title && (
         <Text
           variant="titleMedium"
-          style={{ marginTop: 16, textAlign: 'center', marginBottom: 16 }}>
+          style={[{ marginTop: 16, textAlign: 'center', marginBottom: 16 }, titleStyle]}>
           {title}
         </Text>
       )}
@@ -60,6 +61,7 @@ const AverageGradeChart = ({ data, style, title }: Props) => {
           axisMaximum: 9.5,
           position: 'BOTTOM',
           textSize: 12,
+          textColor: processColor('#ffffff'),
           valueFormatter: [
             '0-10',
             '11-20',
@@ -75,7 +77,13 @@ const AverageGradeChart = ({ data, style, title }: Props) => {
           labelCount: 10,
         }}
         yAxis={{
-          left: { granularity: 1, textSize: 12 },
+          left: {
+            granularity: 1,
+            textSize: 12,
+            textColor: processColor('#ffffff'),
+            axisMinimum: -0.1,
+            spaceTop: 10
+          },
           right: { drawGridLines: false, drawLabels: false },
         }}
         legend={{ enabled: false }}

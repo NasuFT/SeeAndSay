@@ -1,7 +1,7 @@
 import { useFormState } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 
-import { Button, ScrollingScreen } from '@/components';
+import { Button, Logo, Screen, StatusBar } from '@/components';
 import { RootStackScreenProps } from '@/navigators/types';
 
 import useLoginContainer from './useLoginContainer';
@@ -17,22 +17,18 @@ const Login = () => {
   };
 
   return (
-    <ScrollingScreen
-      contentContainerStyle={{
-        alignItems: 'stretch',
-        justifyContent: 'space-between',
-        flexGrow: 1,
-      }}
-      style={{ flexGrow: 1 }}>
-      <LoginForm control={control} onSubmit={handleLoginPress} />
+    <Screen withBackground source={require('@/../assets/ui/background.png')} style={{ flex: 1 }}>
+      <StatusBar color="dark" />
+      <Logo />
+      <LoginForm control={control} onSubmit={handleLoginPress} style={{ marginHorizontal: 16 }} />
       <Button
         disabled={isSubmitting}
         mode="contained-tonal"
-        style={{ marginVertical: 16 }}
+        style={{ margin: 16 }}
         onPress={handleRegisterPress}>
-        Register Instead
+        Sign Up
       </Button>
-    </ScrollingScreen>
+    </Screen>
   );
 };
 

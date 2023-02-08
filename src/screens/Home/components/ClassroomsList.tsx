@@ -26,6 +26,8 @@ const ClassroomsList = ({ data, onItemPress, onScroll, onItemLongPress }: Props<
           onPress={(e) => onItemPress?.(e, item)}
           onLongPress={(e) => onItemLongPress?.(e, item)}
           delayLongPress={300}
+          titleStyle={{ color: '#ffffff' }}
+          descriptionStyle={{ color: '#ffffff' }}
         />
       )}
     />
