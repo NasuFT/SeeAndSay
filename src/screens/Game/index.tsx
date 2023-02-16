@@ -12,7 +12,8 @@ import { BackHandler } from 'react-native';
 import { SubmissionData } from '@/types';
 
 const Game = () => {
-  const { dailyTask, imageSources, setSubmission, uploadSubmission } = useGameContainer();
+  const { dailyTask, imageSources, setSubmission, uploadSubmission, finishScreen } =
+    useGameContainer();
   const { game } = dailyTask;
   const { type } = game;
 
@@ -23,6 +24,7 @@ const Game = () => {
       time,
     });
     await uploadSubmission();
+    finishScreen();
     navigation.pop();
   };
 

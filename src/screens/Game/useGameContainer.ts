@@ -14,7 +14,9 @@ const useGameContainer = () => {
     throw new Error('No task selected!');
   }
 
-  return { dailyTask, imageSources, setSubmission, uploadSubmission };
+  const finishScreen = () => dispatch.screen.setDidFinishGame(true);
+
+  return { dailyTask, imageSources, setSubmission, uploadSubmission, finishScreen };
 };
 
 export default useGameContainer;

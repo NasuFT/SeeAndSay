@@ -152,11 +152,6 @@ const SpeechToTextSuggest = ({ onValueChange, style }: Props) => {
     onValueChange?.(voiceState.suggestion);
   }, [voiceState.suggestion]);
 
-  useEffect(() => {
-    console.log(voiceState.status);
-    console.log(voiceState.error);
-  }, [voiceState.status]);
-
   return (
     <View style={style}>
       <View style={{ flexDirection: 'row' }}>

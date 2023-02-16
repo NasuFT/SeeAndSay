@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View, ImageBackground } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { Dialog, FAB, IconButton, List, Portal } from 'react-native-paper';
 
 import { Button, Screen } from '@/components';
@@ -11,6 +11,7 @@ import useStudentView from './useStudentView';
 import JoinClassroomForm from './JoinClassroomForm';
 import TaskOfTheDay from '../components/TaskOfTheDay';
 import GradeComparison from '../components/GradeComparison';
+import GradePopupWindow from '../components/GradePopupWindow';
 
 const StudentView = () => {
   const navigation = useNavigation<RootStackScreenProps<'Home'>['navigation']>();
@@ -19,6 +20,11 @@ const StudentView = () => {
   const [isDialogShown, setIsDialogShown] = useState(false);
   const showDialog = () => setIsDialogShown(true);
   const hideDialog = () => setIsDialogShown(false);
+
+  // Popup: After Game Finish
+  const [isPopupShown, setIsPopupShown] = useState(false);
+  const showPopup = () => setIsPopupShown(true);
+  const hidePopup = () => setIsPopupShown(false);
 
   const {
     control,
@@ -32,6 +38,8 @@ const StudentView = () => {
     getDailyTask,
     previousSubmission,
     currentSubmission,
+    didFinishGame,
+    setDidFinishGameFalse,
   } = useStudentView();
   const onDialogPressJoin = () => {
     hideDialog();
@@ -55,6 +63,15 @@ const StudentView = () => {
         getRecentSubmissions();
       }
     }, [dailyTask])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (didFinishGame) {
+        showPopup();
+        setDidFinishGameFalse();
+      }
+    }, [didFinishGame])
   );
 
   const handlePressDailyTask = async () => {
@@ -113,6 +130,17 @@ const StudentView = () => {
         style={{ alignSelf: 'flex-end', marginBottom: 24, marginRight: 24 }}
         onPress={showDialog}
       />
+
+      <Portal>
+        <Dialog visible={isPopupShown} dismissable={false} style={{ backgroundColor: 'white' }}>
+          <Dialog.Content>
+            <GradePopupWindow grade={currentSubmission?.grade} />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hidePopup}>Close</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
 
       <Portal>
         <Dialog visible={isDialogShown} dismissable={false} onDismiss={hideDialog}>

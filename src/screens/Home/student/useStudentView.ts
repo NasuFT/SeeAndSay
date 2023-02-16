@@ -25,6 +25,10 @@ const useStudentView = () => {
   const dailyTask = useSelector((state: RootState) => state.tasks.task);
   const getDailyTask = dispatch.tasks.getDailyTask;
 
+  // did user just finish game
+  const didFinishGame = useSelector((state: RootState) => state.screen.didFinishGame);
+  const setDidFinishGameFalse = () => dispatch.screen.setDidFinishGame(false);
+
   // submissions
   const [previousSubmission, setPreviousSubmission] = useState<SubmissionInfo | null>(null);
   const [currentSubmission, setCurrentSubmission] = useState<SubmissionInfo | null>(null);
@@ -120,6 +124,8 @@ const useStudentView = () => {
     getRecentSubmissions,
     previousSubmission,
     currentSubmission,
+    didFinishGame,
+    setDidFinishGameFalse,
   };
 };
 
