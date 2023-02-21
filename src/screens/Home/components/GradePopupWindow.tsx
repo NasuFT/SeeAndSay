@@ -34,14 +34,42 @@ const getSourceFileToPlay = (grade?: number | null) => {
     return null;
   }
 
-  if (grade >= 90) {
-    return require('@/../assets/sounds/game_finish_perfect_well-done.mp3');
+  if (grade >= 100) {
+    return require('@/../assets/sounds/game_finish_perfect.mp3');
   }
 
-  return require('@/../assets/sounds/game_finish_other.mp3');
+  if (grade >= 90) {
+    return require('@/../assets/sounds/game_finish_well-done.mp3');
+  }
+
+  if (grade >= 75) {
+    return require('@/../assets/sounds/game_finish_good-job.wav');
+  }
+
+  return require('@/../assets/sounds/game_finish_nice-try.mp3');
 };
 
-const GradePopupWindow = ({ grade = 95, style }: Props) => {
+const getImageFileToShow = (grade?: number | null) => {
+  if (!grade) {
+    return undefined;
+  }
+
+  if (grade >= 100) {
+    return require('@/../assets/ui/game_finish/perfect.gif');
+  }
+
+  if (grade >= 90) {
+    return require('@/../assets/ui/game_finish/well_done.gif');
+  }
+
+  if (grade >= 75) {
+    return require('@/../assets/ui/game_finish/good_job.gif');
+  }
+
+  return require('@/../assets/ui/game_finish/nice_try.gif');
+};
+
+const GradePopupWindow = ({ grade = 100, style }: Props) => {
   const sound = useRef<Audio.Sound>(new Audio.Sound());
 
   const loadAudio = async () => {
@@ -68,12 +96,15 @@ const GradePopupWindow = ({ grade = 95, style }: Props) => {
 
   return (
     <View style={[style]}>
-      <Text variant="headlineSmall" style={{ textAlign: 'center' }}>{`Grade: ${grade}`}</Text>
+      <Text variant="headlineSmall" style={{ textAlign: 'center' }}>{`Grade: ${grade?.toFixed(
+        2
+      )}`}</Text>
       <Text variant="titleMedium" style={{ textAlign: 'center', marginTop: 12 }}>
         {getGradeStatus(grade)}
       </Text>
       <Image
-        source={require('@/../assets/ui/good_job.gif')}
+        resizeMode="contain"
+        source={getImageFileToShow(grade)}
         style={{ marginTop: 24, width: 128, height: 128, alignSelf: 'center' }}
       />
     </View>

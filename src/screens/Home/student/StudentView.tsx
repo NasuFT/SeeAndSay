@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View, ImageBackground } from 'react-native';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Dialog, FAB, IconButton, List, Portal } from 'react-native-paper';
 
 import { Button, Screen } from '@/components';
@@ -139,6 +139,14 @@ const StudentView = () => {
           <Dialog.Actions>
             <Button onPress={hidePopup}>Close</Button>
           </Dialog.Actions>
+          {/* <Image
+            resizeMode="contain"
+            style={[
+              StyleSheet.absoluteFillObject,
+              { width: 420, height: 78 },
+              { backgroundColor: 'rgba(255,0,0,0.5)' },
+            ]}
+          /> */}
         </Dialog>
       </Portal>
 

@@ -22,12 +22,12 @@ import { uploadGames, uploadUsers } from './helper';
 
 // if (__DEV__) {
 //   console.log('DEV MODE');
-//   auth().useEmulator('http://192.168.1.7:9099');
+//   auth().useEmulator('http://192.168.1.3:9099');
 //   firestore().settings({
 //     persistence: false,
 //   });
-//   firestore().useEmulator('192.168.1.7', 8080);
-//   storage().useEmulator('192.168.1.7', 9199);
+//   firestore().useEmulator('192.168.1.3', 8080);
+//   storage().useEmulator('192.168.1.3', 9199);
 // }
 
 const AppContainer = () => {
