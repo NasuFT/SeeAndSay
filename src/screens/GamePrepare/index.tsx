@@ -10,7 +10,7 @@ import useGamePrepareContainer from './useGamePrepareContainer';
 
 const getGameTypeTitle = (type: GameType) => {
   return type === 'classic'
-    ? 'Classic'
+    ? 'Name It!'
     : type === 'describeme'
     ? 'Describe Me'
     : type === 'fourpicsoneword'
@@ -19,6 +19,19 @@ const getGameTypeTitle = (type: GameType) => {
     ? 'Puzzle'
     : // type === 'scavengerhunt'
       'Scavenger Hunt';
+};
+
+const getGameTypeDescription = (type: GameType) => {
+  return type === 'classic'
+    ? 'Name the picture shown!'
+    : type === 'describeme'
+    ? 'Choose the words that best describe the picture shown!'
+    : type === 'fourpicsoneword'
+    ? 'Type the word that best describes the four pictures shown!'
+    : type === 'puzzle'
+    ? 'Arrange the tiles!'
+    : // type === 'scavengerhunt'
+      'Find the specified object or person!';
 };
 
 const GamePrepare = () => {
@@ -79,8 +92,11 @@ const GamePrepare = () => {
           </Text>
           <Text
             variant="titleLarge"
-            style={{ marginTop: 32, color: '#ffffff', textAlign: 'center' }}>
+            style={{ marginTop: 16, color: '#ffffff', textAlign: 'center' }}>
             {getGameTypeTitle(game.type)}
+          </Text>
+          <Text style={{ marginBottom: 8, color: '#ffffff', textAlign: 'center' }}>
+            {getGameTypeDescription(game.type)}
           </Text>
           <Text
             variant="labelLarge"

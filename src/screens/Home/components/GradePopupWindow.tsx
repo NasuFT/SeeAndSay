@@ -1,7 +1,8 @@
 import { View, StyleProp, ViewStyle, Image } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackSource } from 'expo-av';
 import React, { useEffect, useRef } from 'react';
+import { useDerivedValue } from 'react-native-reanimated';
 
 interface Props {
   grade?: number | null;
@@ -72,8 +73,7 @@ const getImageFileToShow = (grade?: number | null) => {
 const GradePopupWindow = ({ grade = 100, style }: Props) => {
   const sound = useRef<Audio.Sound>(new Audio.Sound());
 
-  const loadAudio = async () => {
-    const file = getSourceFileToPlay(grade);
+  const loadAudio = async (file: AVPlaybackSource | null) => {
     if (file === null) {
       return;
     }
@@ -87,12 +87,12 @@ const GradePopupWindow = ({ grade = 100, style }: Props) => {
   };
 
   useEffect(() => {
-    loadAudio();
+    loadAudio(getSourceFileToPlay(grade));
 
     return () => {
       unloadAudio();
     };
-  }, []);
+  }, [grade]);
 
   return (
     <View style={[style]}>

@@ -3,7 +3,7 @@ import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
 import { format } from 'date-fns';
 import { Text, useTheme } from 'react-native-paper';
 
-import { Task } from '@/types';
+import { GameType, Task } from '@/types';
 
 interface Props {
   disabled?: boolean;
@@ -12,6 +12,20 @@ interface Props {
   subtitleDisabled?: string;
   task?: Task | null;
 }
+
+const getGameTypeTitle = (type?: GameType) => {
+  return type === 'classic'
+    ? 'Name It!'
+    : type === 'describeme'
+    ? 'Describe Me'
+    : type === 'fourpicsoneword'
+    ? 'Four Pics One Word'
+    : type === 'puzzle'
+    ? 'Puzzle'
+    : type === 'scavengerhunt'
+    ? 'Scavenger Hunt'
+    : null;
+};
 
 const TaskOfTheDay = ({
   disabled = false,
@@ -36,6 +50,9 @@ const TaskOfTheDay = ({
           }}>
           <Text variant="titleLarge" numberOfLines={1} style={{ textAlign: 'center' }}>
             {task?.game.title ?? subtitleDisabled}
+          </Text>
+          <Text variant="labelLarge" style={{ textAlign: 'center', marginTop: 4 }}>
+            {getGameTypeTitle(task?.game.type)}
           </Text>
           <Text variant="labelLarge" style={{ textAlign: 'center', marginTop: 4 }}>
             {task && format(task.submissionDate, 'MMMM d, yyyy')}

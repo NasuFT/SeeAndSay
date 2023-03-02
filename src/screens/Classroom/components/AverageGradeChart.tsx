@@ -60,7 +60,7 @@ const AverageGradeChart = ({ data, style, title, titleStyle }: Props) => {
           axisMinimum: -0.5,
           axisMaximum: 9.5,
           position: 'BOTTOM',
-          textSize: 12,
+          textSize: 10,
           textColor: processColor('#ffffff'),
           valueFormatter: [
             '0-10',
@@ -79,7 +79,7 @@ const AverageGradeChart = ({ data, style, title, titleStyle }: Props) => {
         yAxis={{
           left: {
             granularity: 1,
-            textSize: 12,
+            textSize: 10,
             textColor: processColor('#ffffff'),
             axisMinimum: -0.1,
             spaceTop: 10
